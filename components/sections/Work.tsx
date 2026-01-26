@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import {
   Container,
@@ -20,6 +21,7 @@ const projects = [
     link: "/work/cartaisy",
     isLive: true,
     gradient: "from-amber-600 to-orange-700",
+    featuredImage: "/assets/images/cartaisy.png",
   },
   {
     tag: "Health & Fitness",
@@ -30,6 +32,7 @@ const projects = [
     link: "/work/fitpulse",
     isLive: false,
     gradient: "from-emerald-600 to-teal-700",
+    featuredImage: "",
   },
   {
     tag: "E-Commerce",
@@ -40,6 +43,7 @@ const projects = [
     link: "/work/orderflow",
     isLive: false,
     gradient: "from-violet-600 to-purple-700",
+    featuredImage: "",
   },
 ];
 
@@ -81,25 +85,41 @@ export function Work() {
               >
                 {/* Image Area */}
                 <div className={`aspect-video bg-gradient-to-br ${project.gradient} relative overflow-hidden`}>
-                  {/* Zoom effect on hover */}
-                  <div className="absolute inset-0 flex items-center justify-center transition-transform duration-500 group-hover:scale-105">
-                    <div className="text-center">
-                      <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center mx-auto mb-3
-                        transition-transform duration-300 group-hover:scale-110">
-                        <span className="text-3xl font-bold text-white">
-                          {project.title.charAt(0)}
-                        </span>
+                  {project.featuredImage ? (
+                    <>
+                      <Image
+                        src={project.featuredImage}
+                        alt={project.title}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      />
+                      {/* Overlay that lightens on hover */}
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-white/5 transition-colors duration-300" />
+                    </>
+                  ) : (
+                    <>
+                      {/* Zoom effect on hover */}
+                      <div className="absolute inset-0 flex items-center justify-center transition-transform duration-500 group-hover:scale-105">
+                        <div className="text-center">
+                          <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center mx-auto mb-3
+                            transition-transform duration-300 group-hover:scale-110">
+                            <span className="text-3xl font-bold text-white">
+                              {project.title.charAt(0)}
+                            </span>
+                          </div>
+                          <span className="text-white/60 text-sm">Preview Coming Soon</span>
+                        </div>
                       </div>
-                      <span className="text-white/60 text-sm">Preview Coming Soon</span>
-                    </div>
-                  </div>
 
-                  {/* Overlay that lightens on hover */}
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-white/5 transition-colors duration-300" />
+                      {/* Overlay that lightens on hover */}
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-white/5 transition-colors duration-300" />
+                    </>
+                  )}
 
                   {/* Live Badge */}
                   {project.isLive && (
-                    <div className="absolute top-4 right-4 flex items-center gap-1.5 px-3 py-1 bg-white/10 backdrop-blur-sm rounded-full">
+                    <div className="absolute top-4 right-4 flex items-center gap-1.5 px-3 py-1 bg-white/10 backdrop-blur-sm rounded-full z-10">
                       <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
                       <span className="text-white text-xs font-medium">Live</span>
                     </div>

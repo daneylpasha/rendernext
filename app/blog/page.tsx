@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { ChevronRight, Calendar, Clock, ArrowRight } from "lucide-react";
 import {
   getPostsByCategory,
@@ -102,13 +103,27 @@ function FeaturedPostCard({ post }: { post: BlogPost }) {
       <Link href={`/blog/${post.slug}`}>
         <div className="grid lg:grid-cols-2 gap-8 bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-xl transition-shadow group">
           {/* Image */}
-          <div className="aspect-video lg:aspect-auto bg-gradient-to-br from-mustard/20 to-orange-400/20 flex items-center justify-center relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-mustard/30 to-orange-500/30" />
-            <span className="text-6xl font-bold text-white/30 font-heading relative z-10">
-              {post.title.charAt(0)}
-            </span>
+          <div className="aspect-video lg:aspect-auto bg-gradient-to-br from-mustard/20 to-orange-400/20 relative overflow-hidden min-h-[300px]">
+            {post.featuredImage ? (
+              <Image
+                src={post.featuredImage}
+                alt={post.title}
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
+            ) : (
+              <>
+                <div className="absolute inset-0 bg-gradient-to-br from-mustard/30 to-orange-500/30" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-6xl font-bold text-white/30 font-heading">
+                    {post.title.charAt(0)}
+                  </span>
+                </div>
+              </>
+            )}
             {/* Featured badge */}
-            <div className="absolute top-4 left-4 bg-mustard text-black text-xs font-bold px-3 py-1 rounded-full">
+            <div className="absolute top-4 left-4 bg-mustard text-black text-xs font-bold px-3 py-1 rounded-full z-10">
               Featured
             </div>
           </div>
@@ -165,20 +180,32 @@ function BlogPostCard({ post, index }: { post: BlogPost; index: number }) {
         <article className="bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all group h-full flex flex-col">
           {/* Image */}
           <div className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 relative overflow-hidden">
-            <div
-              className={`absolute inset-0 ${
-                index % 3 === 0
-                  ? "bg-gradient-to-br from-mustard/20 to-orange-400/20"
-                  : index % 3 === 1
-                  ? "bg-gradient-to-br from-blue-400/20 to-cyan-400/20"
-                  : "bg-gradient-to-br from-purple-400/20 to-pink-400/20"
-              }`}
-            />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-4xl font-bold text-white/30 font-heading">
-                {post.title.charAt(0)}
-              </span>
-            </div>
+            {post.featuredImage ? (
+              <Image
+                src={post.featuredImage}
+                alt={post.title}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              />
+            ) : (
+              <>
+                <div
+                  className={`absolute inset-0 ${
+                    index % 3 === 0
+                      ? "bg-gradient-to-br from-mustard/20 to-orange-400/20"
+                      : index % 3 === 1
+                      ? "bg-gradient-to-br from-blue-400/20 to-cyan-400/20"
+                      : "bg-gradient-to-br from-purple-400/20 to-pink-400/20"
+                  }`}
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-4xl font-bold text-white/30 font-heading">
+                    {post.title.charAt(0)}
+                  </span>
+                </div>
+              </>
+            )}
           </div>
 
           {/* Content */}

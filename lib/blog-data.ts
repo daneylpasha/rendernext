@@ -117,7 +117,7 @@ If you're planning a mobile app and weighing your options, [let's talk](/contact
     author: authors.daniyal,
     publishedAt: "2025-01-15",
     readTime: "6 min read",
-    featuredImage: "/assets/blog/react-native-development.jpg",
+    featuredImage: "/assets/images/reactnative.png",
     tags: ["React Native", "Mobile Development", "Cross-Platform", "iOS", "Android"],
     featured: true,
   },
@@ -215,7 +215,7 @@ If you're considering AI for your product, start small:
     author: authors.daniyal,
     publishedAt: "2025-01-10",
     readTime: "8 min read",
-    featuredImage: "/assets/blog/ai-integration-guide.jpg",
+    featuredImage: "/assets/images/ai-01.png",
     tags: ["AI", "OpenAI", "ChatGPT", "Automation", "LLM"],
   },
   {
@@ -356,7 +356,7 @@ It's not ideal for:
     author: authors.rendernext,
     publishedAt: "2025-01-05",
     readTime: "7 min read",
-    featuredImage: "/assets/blog/mvp-development-process.jpg",
+    featuredImage: "/assets/images/idea-mvp.jpg",
     tags: ["MVP", "Startup", "Product Development", "Agile"],
   },
   {
@@ -479,7 +479,7 @@ At RenderNext, we:
     author: authors.daniyal,
     publishedAt: "2024-12-28",
     readTime: "6 min read",
-    featuredImage: "/assets/blog/app-development-cost.jpg",
+    featuredImage: "/assets/images/app-cost.jpg",
     tags: ["Pricing", "Mobile Development", "Budget", "Startup"],
   },
   {
@@ -615,7 +615,7 @@ For most startups, we suggest:
     author: authors.rendernext,
     publishedAt: "2024-12-20",
     readTime: "5 min read",
-    featuredImage: "/assets/blog/web-vs-mobile.jpg",
+    featuredImage: "/assets/images/web-app.jpg",
     tags: ["Web Development", "Mobile Development", "Startup", "Strategy"],
   },
   {
@@ -766,7 +766,7 @@ Ready to explore AI for your business? Here's our process:
     author: authors.daniyal,
     publishedAt: "2024-12-15",
     readTime: "7 min read",
-    featuredImage: "/assets/blog/ai-workflow-integration.jpg",
+    featuredImage: "/assets/images/ai-02.png",
     tags: ["AI", "Automation", "Business", "Workflow", "Enterprise"],
   },
 ];

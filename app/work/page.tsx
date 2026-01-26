@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Star,
   ArrowRight,
@@ -396,6 +397,7 @@ function ProjectsGridSection() {
       description: "Fitness tracking with personalized workout plans",
       tech: ["React Native", "Firebase", "HealthKit"],
       gradient: "from-teal-500 to-emerald-600",
+      featuredImage: "",
     },
     {
       category: "E-Commerce",
@@ -404,6 +406,7 @@ function ProjectsGridSection() {
       description: "Restaurant ordering with real-time tracking",
       tech: ["Next.js", "React Native", "Stripe"],
       gradient: "from-violet-500 to-purple-600",
+      featuredImage: "",
     },
     {
       category: "Productivity",
@@ -412,6 +415,7 @@ function ProjectsGridSection() {
       description: "Team collaboration and task management",
       tech: ["React Native", "Supabase", "WebSockets"],
       gradient: "from-blue-500 to-cyan-600",
+      featuredImage: "",
     },
   ];
 
@@ -442,19 +446,32 @@ function ProjectsGridSection() {
               transition={{ duration: 0.3 }}
               className="group relative rounded-2xl overflow-hidden aspect-[3/4] cursor-pointer"
             >
-              {/* Gradient Background */}
-              <div
-                className={`absolute inset-0 bg-gradient-to-br ${project.gradient}`}
-              />
+              {/* Background - Image or Gradient */}
+              {project.featuredImage ? (
+                <Image
+                  src={project.featuredImage}
+                  alt={project.name}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                />
+              ) : (
+                <>
+                  {/* Gradient Background */}
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-br ${project.gradient}`}
+                  />
 
-              {/* Decorative elements */}
-              <div className="absolute inset-0">
-                <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-24 h-24 bg-white/10 rounded-2xl rotate-12 blur-sm" />
-                <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-16 h-16 bg-white/20 rounded-xl" />
-              </div>
+                  {/* Decorative elements */}
+                  <div className="absolute inset-0">
+                    <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-24 h-24 bg-white/10 rounded-2xl rotate-12 blur-sm" />
+                    <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-16 h-16 bg-white/20 rounded-xl" />
+                  </div>
+                </>
+              )}
 
               {/* Showcase badge */}
-              <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md text-white text-xs font-medium px-3 py-1.5 rounded-full border border-white/30">
+              <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md text-white text-xs font-medium px-3 py-1.5 rounded-full border border-white/30 z-10">
                 Showcase
               </div>
 
