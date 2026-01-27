@@ -3,7 +3,9 @@
     "allow": [
       "Bash(npm run dev:*)",
       "Bash(git checkout:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(copy \"C:\\\\Users\\\\Mohsin\\\\Downloads\\\\foodapp.png\" \"D:\\\\PROJECTS\\\\RenderNext\\\\public\\\\assets\\\\images\\\\orderflow.png\")",
+      "Bash(copy \"C:\\\\Users\\\\Mohsin\\\\Downloads\\\\fitness-app.png\" \"D:\\\\PROJECTS\\\\RenderNext\\\\public\\\\assets\\\\images\\\\fitplus.png\")"
     ]
   }
 }

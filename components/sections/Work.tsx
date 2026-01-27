@@ -25,14 +25,14 @@ const projects = [
   },
   {
     tag: "Health & Fitness",
-    title: "FitPulse",
+    title: "FitPlus",
     description:
       "Comprehensive fitness tracking app with personalized workout plans, nutrition logging, and progress analytics.",
     tech: ["React Native", "Firebase", "Charts", "HealthKit"],
-    link: "/work/fitpulse",
+    link: "/work/fitplus",
     isLive: false,
     gradient: "from-emerald-600 to-teal-700",
-    featuredImage: "",
+    featuredImage: "/assets/images/fitplus.png",
   },
   {
     tag: "E-Commerce",
@@ -43,7 +43,7 @@ const projects = [
     link: "/work/orderflow",
     isLive: false,
     gradient: "from-violet-600 to-purple-700",
-    featuredImage: "",
+    featuredImage: "/assets/images/orderflow.png",
   },
 ];
 

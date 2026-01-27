@@ -168,15 +168,17 @@ export function Footer() {
                   </span>
                 </li>
               </ul>
-              <Link
-                href="/contact"
+              <a
+                href="https://calendly.com/rendernext/15min?back=1"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-block mt-6 px-5 py-2.5 text-sm font-medium text-[#F5A623]
                   border border-[#F5A623]/50 rounded-lg
                   hover:bg-[#F5A623]/10 hover:border-[#F5A623] hover:scale-105
                   transition-all duration-200"
               >
                 Schedule a Call
-              </Link>
+              </a>
             </StaggerItem>
           </StaggerContainer>
 

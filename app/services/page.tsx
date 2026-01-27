@@ -317,13 +317,15 @@ function CTASection() {
             Book a free consultation and we&apos;ll help you figure out the
             right approach for your project.
           </p>
-          <Link
-            href="/contact"
+          <a
+            href="https://calendly.com/rendernext/15min?back=1"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-mustard text-black px-8 py-4 rounded-lg font-semibold hover:bg-mustard/90 transition-colors"
           >
             Schedule a Call
             <ArrowRight className="w-5 h-5" />
-          </Link>
+          </a>
         </motion.div>
       </div>
     </section>

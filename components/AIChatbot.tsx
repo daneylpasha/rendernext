@@ -294,7 +294,7 @@ export function AIChatbot() {
               </div>
               <p className="text-xs text-gray-400 text-center mt-2">
                 Powered by AI - For detailed quotes, please{" "}
-                <a href="/contact" className="text-accent hover:underline">
+                <a href="https://calendly.com/rendernext/15min?back=1" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
                   book a call
                 </a>
               </p>

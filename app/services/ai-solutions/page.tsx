@@ -847,13 +847,15 @@ function CTASection() {
             Free initial consultation.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link
-              href="/contact"
+            <a
+              href="https://calendly.com/rendernext/15min?back=1"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-mustard text-black px-8 py-4 rounded-lg font-semibold hover:bg-mustard/90 transition-colors"
             >
               Schedule AI Consultation
               <ArrowRight className="w-5 h-5" />
-            </Link>
+            </a>
             <Link
               href="/work"
               className="inline-flex items-center gap-2 border border-white/30 text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/10 transition-colors"

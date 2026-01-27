@@ -253,13 +253,15 @@ Description: ${formData.description}
                     and provide a more accurate quote.
                   </p>
                   <div className="flex flex-wrap justify-center gap-4">
-                    <Link
-                      href="/contact"
+                    <a
+                      href="https://calendly.com/rendernext/15min?back=1"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 bg-[#F5A623] text-black px-6 py-3 rounded-xl font-semibold hover:bg-[#F5A623]/90 transition-all"
                     >
                       <Calendar className="w-4 h-4" />
                       Schedule a Call
-                    </Link>
+                    </a>
                     <Link
                       href="/"
                       className="inline-flex items-center gap-2 border border-white/30 text-white px-6 py-3 rounded-xl font-semibold hover:bg-white/10 transition-all"
