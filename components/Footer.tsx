@@ -58,10 +58,10 @@ export function Footer() {
             <StaggerItem>
               <Link href="/" className="inline-block">
                 <Image
-                  src="/assets/logos/Logo_500w-SQ-trans-dark.png"
+                  src="/assets/logos/Logo_500w-SQ-trans-dark-web.png"
                   alt="RenderNext"
-                  width={160}
-                  height={120}
+                  width={100}
+                  height={75}
                   className="h-24 w-auto"
                 />
               </Link>
