@@ -22,7 +22,7 @@ export function OrganizationJsonLd({
   url = "https://rendernext.io",
   logo = "https://rendernext.io/icon-512.png",
   description = "Austin-based digital product studio specializing in React Native mobile apps, Next.js web applications, and AI solutions.",
-  email = "hello@rendernext.io",
+  email = "info@rendernext.io",
   telephone = "+15123256674",
   address = {
     addressLocality: "Austin",
@@ -149,7 +149,7 @@ export function LocalBusinessJsonLd({
   name = "RenderNext",
   url = "https://rendernext.io",
   telephone = "+15123256674",
-  email = "hello@rendernext.io",
+  email = "info@rendernext.io",
   address = {
     addressLocality: "Austin",
     addressRegion: "TX",

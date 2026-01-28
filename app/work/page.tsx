@@ -393,11 +393,12 @@ function ProjectsGridSection() {
     {
       category: "Health & Fitness",
       icon: Activity,
-      name: "FitPulse",
+      name: "FitPlus",
       description: "Fitness tracking with personalized workout plans",
       tech: ["React Native", "Firebase", "HealthKit"],
       gradient: "from-teal-500 to-emerald-600",
-      featuredImage: "",
+      featuredImage: "/assets/images/fitplus.png",
+      link: "/work/fitplus",
     },
     {
       category: "E-Commerce",
@@ -406,7 +407,8 @@ function ProjectsGridSection() {
       description: "Restaurant ordering with real-time tracking",
       tech: ["Next.js", "React Native", "Stripe"],
       gradient: "from-violet-500 to-purple-600",
-      featuredImage: "",
+      featuredImage: "/assets/images/orderflow.png",
+      link: "/work/orderflow",
     },
     {
       category: "Productivity",
@@ -415,7 +417,8 @@ function ProjectsGridSection() {
       description: "Team collaboration and task management",
       tech: ["React Native", "Supabase", "WebSockets"],
       gradient: "from-blue-500 to-cyan-600",
-      featuredImage: "",
+      featuredImage: "/assets/images/taskhub.png",
+      link: "/work/taskhub",
     },
   ];
 
@@ -507,10 +510,10 @@ function ProjectsGridSection() {
 
                 {/* View button - reveals on hover */}
                 <Link
-                  href="/contact"
+                  href={project.link}
                   className="inline-flex items-center gap-2 text-mustard font-semibold opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300"
                 >
-                  View Project
+                  View Case Study
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>

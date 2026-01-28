@@ -148,10 +148,10 @@ export function Footer() {
               <ul className="space-y-3">
                 <li>
                   <a
-                    href="mailto:hello@rendernext.io"
+                    href="mailto:info@rendernext.io"
                     className="text-gray-400 hover:text-[#F5A623] text-sm transition-colors duration-200"
                   >
-                    hello@rendernext.io
+                    info@rendernext.io
                   </a>
                 </li>
                 <li>
