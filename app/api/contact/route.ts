@@ -116,7 +116,7 @@ export async function POST(request: NextRequest) {
     };
 
     // Target email for all form submissions
-    const targetEmail = "bd@rendernext.io";
+    const targetEmail = "sales@rendernext.io";
 
     // Send via webhook if configured (e.g., Zapier, Make, or custom endpoint)
     if (process.env.CONTACT_WEBHOOK_URL) {
