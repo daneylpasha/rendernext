@@ -560,7 +560,7 @@ Description: ${formData.description}
                           value={formData.name}
                           onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
                           placeholder="John Doe"
-                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-[#F5A623] focus:outline-none transition-colors"
+                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-[#F5A623] focus:outline-none transition-colors text-gray-900 bg-white"
                         />
                       </div>
                       <div>
@@ -573,7 +573,7 @@ Description: ${formData.description}
                           value={formData.email}
                           onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))}
                           placeholder="john@company.com"
-                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-[#F5A623] focus:outline-none transition-colors"
+                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-[#F5A623] focus:outline-none transition-colors text-gray-900 bg-white"
                         />
                       </div>
                       <div>
@@ -586,7 +586,7 @@ Description: ${formData.description}
                           value={formData.company}
                           onChange={(e) => setFormData((prev) => ({ ...prev, company: e.target.value }))}
                           placeholder="Acme Inc."
-                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-[#F5A623] focus:outline-none transition-colors"
+                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-[#F5A623] focus:outline-none transition-colors text-gray-900 bg-white"
                         />
                       </div>
                       <div>
@@ -599,7 +599,7 @@ Description: ${formData.description}
                           onChange={(e) => setFormData((prev) => ({ ...prev, description: e.target.value }))}
                           placeholder="Tell us briefly about your project idea..."
                           rows={4}
-                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-[#F5A623] focus:outline-none transition-colors resize-none"
+                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-[#F5A623] focus:outline-none transition-colors resize-none text-gray-900 bg-white"
                         />
                       </div>
                     </div>
