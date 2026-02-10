@@ -41,7 +41,7 @@ export function FloatingCTA() {
             {/* Dismiss button */}
             <button
               onClick={handleDismiss}
-              className="absolute -top-2 -right-2 w-6 h-6 bg-gray-700 hover:bg-gray-600 rounded-full flex items-center justify-center transition-colors"
+              className="absolute -top-2 -right-2 z-10 w-6 h-6 bg-gray-700 hover:bg-gray-600 rounded-full flex items-center justify-center transition-colors"
               aria-label="Dismiss"
             >
               <X className="w-3 h-3 text-white" />

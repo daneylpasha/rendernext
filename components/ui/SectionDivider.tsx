@@ -31,10 +31,10 @@ export function SectionDivider({
 
   return (
     <div
-      className={`relative w-full overflow-hidden ${className}`}
+      className={`relative w-full ${className}`}
       style={{
+        marginTop: "-1px",
         backgroundColor: colors[from],
-        marginTop: "0px",
       }}
     >
       <svg
@@ -43,8 +43,18 @@ export function SectionDivider({
         className={`w-full h-16 lg:h-24 ${flip ? "rotate-360" : ""}`}
         style={{ display: "block" }}
       >
+        <rect width="960" height="128" fill={colors[from]} />
         <path d={paths[variant]} fill={fillColor} />
       </svg>
+      {/* Absolute-positioned overlap to cover subpixel gap with next section */}
+      <div
+        className="absolute left-0 right-0 bottom-0"
+        style={{
+          height: "6px",
+          backgroundColor: fillColor,
+          transform: "translateY(3px)",
+        }}
+      />
     </div>
   );
 }
@@ -60,7 +70,13 @@ export function DecorativeRing({
   size?: number;
   opacity?: number;
   color?: string;
-  position?: "top-right" | "top-left" | "bottom-right" | "bottom-left" | "center-right" | "center-left";
+  position?:
+    | "top-right"
+    | "top-left"
+    | "bottom-right"
+    | "bottom-left"
+    | "center-right"
+    | "center-left";
   className?: string;
 }) {
   const positionClasses = {
@@ -109,7 +125,9 @@ export function FloatingParticles({
   }));
 
   return (
-    <div className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}>
+    <div
+      className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}
+    >
       {particles.map((particle) => (
         <div
           key={particle.id}

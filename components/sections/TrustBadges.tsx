@@ -39,7 +39,7 @@ const trustItems = [
 
 export function TrustBadges() {
   return (
-    <section className="bg-white py-12 lg:py-16 border-y border-gray-100">
+    <section className="bg-white py-12 lg:py-16 -mt-px">
       <Container>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 lg:gap-4">
           {trustItems.map((item, index) => (

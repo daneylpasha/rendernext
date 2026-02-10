@@ -156,7 +156,7 @@ export function Hero() {
 
   return (
     <>
-      <section className="relative min-h-[90vh] bg-[#0a0a0a] overflow-hidden">
+      <section className="relative min-h-[90vh] bg-[#141414] overflow-hidden">
         {/* Enhanced Background Elements with CSS Animations */}
         <div className="absolute inset-0">
           {/* Base gradient */}
@@ -555,8 +555,6 @@ export function Hero() {
           </div>
         </Container>
 
-        {/* Bottom fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#0a0a0a] to-transparent" />
       </section>
 
       {/* Floating WhatsApp Button */}

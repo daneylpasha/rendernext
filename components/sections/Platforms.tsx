@@ -71,7 +71,7 @@ export function Platforms() {
   return (
     <section
       id="platforms"
-      className="bg-white py-12 lg:py-16 border-t border-gray-100"
+      className="bg-white py-12 lg:py-16"
     >
       <Container>
         {/* Section Label */}
