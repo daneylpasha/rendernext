@@ -58,10 +58,10 @@ export function Footer() {
             <StaggerItem>
               <Link href="/" className="inline-block">
                 <Image
-                  src="/assets/logos/Logo_500w-SQ-trans-dark.png"
+                  src="/assets/logos/Logo_500w-SQ-trans-dark-web.png"
                   alt="RenderNext"
-                  width={160}
-                  height={120}
+                  width={100}
+                  height={75}
                   className="h-24 w-auto"
                 />
               </Link>
@@ -148,10 +148,10 @@ export function Footer() {
               <ul className="space-y-3">
                 <li>
                   <a
-                    href="mailto:hello@rendernext.io"
+                    href="mailto:info@rendernext.io"
                     className="text-gray-400 hover:text-[#F5A623] text-sm transition-colors duration-200"
                   >
-                    hello@rendernext.io
+                    info@rendernext.io
                   </a>
                 </li>
                 <li>
@@ -168,15 +168,17 @@ export function Footer() {
                   </span>
                 </li>
               </ul>
-              <Link
-                href="/contact"
+              <a
+                href="https://calendly.com/rendernext/15min?back=1"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-block mt-6 px-5 py-2.5 text-sm font-medium text-[#F5A623]
                   border border-[#F5A623]/50 rounded-lg
                   hover:bg-[#F5A623]/10 hover:border-[#F5A623] hover:scale-105
                   transition-all duration-200"
               >
                 Schedule a Call
-              </Link>
+              </a>
             </StaggerItem>
           </StaggerContainer>
 

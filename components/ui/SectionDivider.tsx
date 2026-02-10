@@ -34,13 +34,13 @@ export function SectionDivider({
       className={`relative w-full overflow-hidden ${className}`}
       style={{
         backgroundColor: colors[from],
-        marginTop: "-1px",
+        marginTop: "0px",
       }}
     >
       <svg
         viewBox="0 0 960 128"
         preserveAspectRatio="none"
-        className={`w-full h-16 lg:h-24 ${flip ? "rotate-180" : ""}`}
+        className={`w-full h-16 lg:h-24 ${flip ? "rotate-360" : ""}`}
         style={{ display: "block" }}
       >
         <path d={paths[variant]} fill={fillColor} />

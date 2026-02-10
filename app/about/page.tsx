@@ -558,12 +558,14 @@ export default function AboutPage() {
                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
               </Link>
 
-              <Link
-                href="/contact"
+              <a
+                href="https://calendly.com/rendernext/15min?back=1"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 border-2 border-white/30 text-white font-semibold rounded-xl transition-all duration-300 hover:border-white hover:bg-white/10"
               >
                 Schedule a Call
-              </Link>
+              </a>
             </motion.div>
           </div>
 

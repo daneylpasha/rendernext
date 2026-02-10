@@ -22,6 +22,7 @@ const budgetRanges = [
   "$25,000 - $50,000",
   "$50,000 - $100,000",
   "$100,000+",
+  "Not Decided",
 ];
 
 const hearAboutOptions = [
@@ -200,7 +201,7 @@ export default function ContactPage() {
                         name="name"
                         value={formData.name}
                         onChange={handleChange}
-                        className={`w-full px-4 py-3 border rounded-lg transition-all duration-200
+                        className={`w-full px-4 py-3 border rounded-lg transition-all duration-200 text-gray-900 bg-white
                           outline-none ring-0 ring-offset-0 focus:outline-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:border-[#F5A623]
                           ${errors.name ? "border-red-500" : "border-gray-300"}`}
                         placeholder="John Doe"
@@ -217,7 +218,7 @@ export default function ContactPage() {
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
-                        className={`w-full px-4 py-3 border rounded-lg transition-all duration-200
+                        className={`w-full px-4 py-3 border rounded-lg transition-all duration-200 text-gray-900 bg-white
                           outline-none ring-0 ring-offset-0 focus:outline-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:border-[#F5A623]
                           ${errors.email ? "border-red-500" : "border-gray-300"}`}
                         placeholder="john@company.com"
@@ -238,7 +239,7 @@ export default function ContactPage() {
                         name="phone"
                         value={formData.phone}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg transition-all duration-200
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg transition-all duration-200 text-gray-900 bg-white
                           outline-none ring-0 ring-offset-0 focus:outline-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:border-[#F5A623]"
                         placeholder="+1 (555) 000-0000"
                       />
@@ -253,7 +254,7 @@ export default function ContactPage() {
                         name="company"
                         value={formData.company}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg transition-all duration-200
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg transition-all duration-200 text-gray-900 bg-white
                           outline-none ring-0 ring-offset-0 focus:outline-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:border-[#F5A623]"
                         placeholder="Your Company"
                       />
@@ -270,7 +271,7 @@ export default function ContactPage() {
                       name="projectType"
                       value={formData.projectType}
                       onChange={handleChange}
-                      className={`w-full px-4 py-3 border rounded-lg transition-all duration-200
+                      className={`w-full px-4 py-3 border rounded-lg transition-all duration-200 bg-white
                         outline-none ring-0 ring-offset-0 focus:outline-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:border-[#F5A623]
                         ${errors.projectType ? "border-red-500" : "border-gray-300"}
                         ${!formData.projectType ? "text-gray-400" : "text-gray-900"}`}
@@ -294,7 +295,7 @@ export default function ContactPage() {
                       name="budget"
                       value={formData.budget}
                       onChange={handleChange}
-                      className={`w-full px-4 py-3 border rounded-lg transition-all duration-200
+                      className={`w-full px-4 py-3 border rounded-lg transition-all duration-200 bg-white
                         outline-none ring-0 ring-offset-0 focus:outline-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:border-[#F5A623]
                         ${errors.budget ? "border-red-500" : "border-gray-300"}
                         ${!formData.budget ? "text-gray-400" : "text-gray-900"}`}
@@ -319,7 +320,7 @@ export default function ContactPage() {
                       value={formData.description}
                       onChange={handleChange}
                       rows={5}
-                      className={`w-full px-4 py-3 border rounded-lg transition-all duration-200 resize-none
+                      className={`w-full px-4 py-3 border rounded-lg transition-all duration-200 resize-none text-gray-900 bg-white
                         outline-none ring-0 ring-offset-0 focus:outline-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:border-[#F5A623]
                         ${errors.description ? "border-red-500" : "border-gray-300"}`}
                       placeholder="Tell us about your project, goals, and timeline..."
@@ -337,7 +338,7 @@ export default function ContactPage() {
                       name="hearAbout"
                       value={formData.hearAbout}
                       onChange={handleChange}
-                      className={`w-full px-4 py-3 border border-gray-300 rounded-lg transition-all duration-200
+                      className={`w-full px-4 py-3 border border-gray-300 rounded-lg transition-all duration-200 bg-white
                         outline-none ring-0 ring-offset-0 focus:outline-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:border-[#F5A623]
                         ${!formData.hearAbout ? "text-gray-400" : "text-gray-900"}`}
                     >
@@ -406,10 +407,10 @@ export default function ContactPage() {
                   <div>
                     <p className="text-sm text-gray-500 mb-1">Email us</p>
                     <a
-                      href="mailto:hello@rendernext.io"
+                      href="mailto:info@rendernext.io"
                       className="text-gray-900 font-medium hover:text-[#F5A623] transition-colors duration-200"
                     >
-                      hello@rendernext.io
+                      info@rendernext.io
                     </a>
                   </div>
                 </div>

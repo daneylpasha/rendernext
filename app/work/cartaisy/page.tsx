@@ -1388,13 +1388,15 @@ export default function CartaisyCaseStudy() {
                   Get a Free Estimate
                   <ArrowRight className="w-5 h-5" />
                 </Link>
-                <Link
-                  href="/contact"
+                <a
+                  href="https://calendly.com/rendernext/15min?back=1"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-colors"
                 >
                   <MessageSquare className="w-5 h-5" />
                   Schedule a Call
-                </Link>
+                </a>
               </div>
 
               <div className="mt-12 pt-8 border-t border-gray-200">

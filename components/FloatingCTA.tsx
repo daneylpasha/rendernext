@@ -59,13 +59,15 @@ export function FloatingCTA() {
                 <p className="text-gray-400 text-xs mb-3">
                   Schedule a free 30-min strategy call
                 </p>
-                <Link
-                  href="/contact"
+                <a
+                  href="https://calendly.com/rendernext/15min?back=1"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-[#F5A623] text-sm font-semibold hover:text-[#FFB84D] transition-colors group"
                 >
                   Book a call
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-                </Link>
+                </a>
               </div>
             </div>
 

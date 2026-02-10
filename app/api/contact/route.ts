@@ -55,7 +55,7 @@ function validateForm(data: Record<string, unknown>): { valid: boolean; errors: 
     errors.push("Please select a project type");
   }
 
-  if (!data.budget || data.budget === "Select your budget") {
+  if (!data.budget || data.budget === "Select your budget" || data.budget === "Select your budget range") {
     errors.push("Please select a budget range");
   }
 
@@ -115,36 +115,62 @@ export async function POST(request: NextRequest) {
       submittedAt: new Date().toISOString(),
     };
 
-    // In production, you would send this via an email service like:
-    // - SendGrid
-    // - Resend
-    // - AWS SES
-    // - Formspree
-    // - EmailJS
+    // Target email for all form submissions
+    const targetEmail = "sales@rendernext.io";
 
-    // For now, we'll log it and return success
-    // In production, replace this with actual email sending logic
-
-    // Example with environment variable check:
+    // Send via webhook if configured (e.g., Zapier, Make, or custom endpoint)
     if (process.env.CONTACT_WEBHOOK_URL) {
-      // Send to a webhook (e.g., Zapier, Make, or custom endpoint)
       try {
         await fetch(process.env.CONTACT_WEBHOOK_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(emailData),
+          body: JSON.stringify({ ...emailData, targetEmail }),
         });
       } catch (webhookError) {
         // eslint-disable-next-line no-console
         console.error("Webhook delivery failed:", webhookError);
-        // Don't fail the request if webhook fails
       }
     }
 
-    // Development logging only - automatically excluded in production builds
+    // Send via email service (Resend, SendGrid, etc.) if configured
+    if (process.env.RESEND_API_KEY) {
+      try {
+        await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${process.env.RESEND_API_KEY}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            from: "RenderNext <noreply@rendernext.io>",
+            to: targetEmail,
+            subject: `New Contact Form: ${emailData.projectType} - ${emailData.name}`,
+            html: `
+              <h2>New Contact Form Submission</h2>
+              <p><strong>Name:</strong> ${emailData.name}</p>
+              <p><strong>Email:</strong> ${emailData.email}</p>
+              <p><strong>Phone:</strong> ${emailData.phone}</p>
+              <p><strong>Company:</strong> ${emailData.company}</p>
+              <p><strong>Project Type:</strong> ${emailData.projectType}</p>
+              <p><strong>Budget:</strong> ${emailData.budget}</p>
+              <p><strong>How they heard about us:</strong> ${emailData.hearAbout}</p>
+              <p><strong>Description:</strong></p>
+              <p>${emailData.description}</p>
+              <hr />
+              <p><em>Submitted at: ${emailData.submittedAt}</em></p>
+            `,
+          }),
+        });
+      } catch (emailError) {
+        // eslint-disable-next-line no-console
+        console.error("Email delivery failed:", emailError);
+      }
+    }
+
+    // Development logging
     if (process.env.NODE_ENV !== "production") {
       // eslint-disable-next-line no-console
-      console.log("Contact form submission:", emailData);
+      console.log("Contact form submission to", targetEmail, ":", emailData);
     }
 
     return NextResponse.json(

@@ -144,10 +144,10 @@ export default function PrivacyPolicyPage() {
               <p className="text-gray-600">
                 Email:{" "}
                 <a
-                  href="mailto:hello@rendernext.io"
+                  href="mailto:info@rendernext.io"
                   className="text-mustard hover:underline"
                 >
-                  hello@rendernext.io
+                  info@rendernext.io
                 </a>
               </p>
             </div>

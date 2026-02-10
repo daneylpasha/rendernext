@@ -13,6 +13,7 @@ const budgetOptions = [
   { value: "25k-50k", label: "$25,000 - $50,000" },
   { value: "50k-100k", label: "$50,000 - $100,000" },
   { value: "100k+", label: "$100,000+" },
+  { value: "not-decided", label: "Not Decided" },
 ];
 
 interface FormData {
@@ -250,10 +251,10 @@ export function CTA() {
             >
               <p className="text-gray-500 font-normal text-sm">Or reach out directly:</p>
               <a
-                href="mailto:hello@rendernext.io"
+                href="mailto:info@rendernext.io"
                 className="text-white hover:text-[#F5A623] transition-colors duration-300 font-medium block"
               >
-                hello@rendernext.io
+                info@rendernext.io
               </a>
               <a
                 href="tel:+15123256674"

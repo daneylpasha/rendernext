@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import {
   ChevronRight,
   Calendar,
@@ -118,10 +119,22 @@ function RelatedPosts({ posts }: { posts: BlogPost[] }) {
         {posts.map((post) => (
           <Link key={post.slug} href={`/blog/${post.slug}`}>
             <article className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all group">
-              <div className="aspect-video bg-gradient-to-br from-mustard/20 to-orange-400/20 flex items-center justify-center">
-                <span className="text-3xl font-bold text-white/30 font-heading">
-                  {post.title.charAt(0)}
-                </span>
+              <div className="aspect-video bg-gradient-to-br from-mustard/20 to-orange-400/20 relative overflow-hidden">
+                {post.featuredImage ? (
+                  <Image
+                    src={post.featuredImage}
+                    alt={post.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="text-3xl font-bold text-white/30 font-heading">
+                      {post.title.charAt(0)}
+                    </span>
+                  </div>
+                )}
               </div>
               <div className="p-4">
                 <span className="text-mustard text-xs font-medium">
@@ -269,11 +282,24 @@ export default async function BlogPostPage({
               </span>
             </div>
 
-            {/* Featured Image Placeholder */}
-            <div className="aspect-video bg-gradient-to-br from-mustard/20 to-orange-400/20 rounded-2xl flex items-center justify-center mb-10">
-              <span className="text-6xl font-bold text-white/30 font-heading">
-                {post.title.charAt(0)}
-              </span>
+            {/* Featured Image */}
+            <div className="aspect-video bg-gradient-to-br from-mustard/20 to-orange-400/20 rounded-2xl relative overflow-hidden mb-10">
+              {post.featuredImage ? (
+                <Image
+                  src={post.featuredImage}
+                  alt={post.title}
+                  fill
+                  className="object-cover rounded-2xl"
+                  sizes="(max-width: 768px) 100vw, 768px"
+                  priority
+                />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-6xl font-bold text-white/30 font-heading">
+                    {post.title.charAt(0)}
+                  </span>
+                </div>
+              )}
             </div>
           </header>
 
