@@ -98,7 +98,7 @@ export function Navigation() {
   // Handle scroll state
   React.useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 20);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -129,7 +129,7 @@ export function Navigation() {
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
           isScrolled || useLightHeader
             ? "bg-white/95 backdrop-blur-sm shadow-sm"
-            : "bg-[#141414]"
+            : "bg-gradient-to-b from-black/60 to-transparent"
         )}
       >
         <Container>
@@ -147,7 +147,7 @@ export function Navigation() {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-8">
+            <div className="hidden xl:flex items-center gap-8">
               {navLinks.map((link) => (
                 <div
                   key={link.href}
@@ -293,7 +293,7 @@ export function Navigation() {
             </div>
 
             {/* Desktop CTA */}
-            <div className="hidden lg:flex items-center gap-3">
+            <div className="hidden xl:flex items-center gap-3">
               <Link
                 href="/estimate"
                 className={cn(
@@ -315,7 +315,7 @@ export function Navigation() {
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className={cn(
-                "lg:hidden p-2 rounded-lg transition-colors z-10",
+                "xl:hidden p-2 rounded-lg transition-colors z-10",
                 isScrolled || useLightHeader || isMobileMenuOpen
                   ? "text-gray-900 hover:bg-gray-100"
                   : "text-white hover:bg-white/10"
@@ -358,7 +358,7 @@ export function Navigation() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "tween", duration: 0.3 }}
-            className="fixed inset-0 z-40 lg:hidden"
+            className="fixed inset-0 z-40 xl:hidden"
           >
             <div className="absolute inset-0 bg-bg-dark" />
             <div className="relative h-full flex flex-col pt-24 pb-8 px-6">
