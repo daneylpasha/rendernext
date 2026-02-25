@@ -49,7 +49,7 @@ const services = [
     title: "UI/UX Design",
     description:
       "User-centered design that converts. Wireframes, prototypes, and pixel-perfect interfaces.",
-    link: "/services/design",
+    link: "/services/ui-ux-design",
   },
   {
     number: "05",
@@ -57,7 +57,7 @@ const services = [
     title: "MVP Development",
     description:
       "Validate your idea fast. We build investor-ready MVPs in 8-12 weeks with core features that matter.",
-    link: "/services/mvp",
+    link: "/services/mvp-development",
   },
   {
     number: "06",

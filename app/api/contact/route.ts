@@ -135,7 +135,7 @@ export async function POST(request: NextRequest) {
     // Send via email service (Resend, SendGrid, etc.) if configured
     if (process.env.RESEND_API_KEY) {
       try {
-        await fetch("https://api.resend.com/emails", {
+        const emailRes = await fetch("https://api.resend.com/emails", {
           method: "POST",
           headers: {
             "Authorization": `Bearer ${process.env.RESEND_API_KEY}`,
@@ -144,6 +144,7 @@ export async function POST(request: NextRequest) {
           body: JSON.stringify({
             from: "RenderNext <noreply@rendernext.io>",
             to: targetEmail,
+            reply_to: emailData.email,
             subject: `New Contact Form: ${emailData.projectType} - ${emailData.name}`,
             html: `
               <h2>New Contact Form Submission</h2>
@@ -161,6 +162,11 @@ export async function POST(request: NextRequest) {
             `,
           }),
         });
+        if (!emailRes.ok) {
+          const errBody = await emailRes.text();
+          // eslint-disable-next-line no-console
+          console.error("Resend API error:", emailRes.status, errBody);
+        }
       } catch (emailError) {
         // eslint-disable-next-line no-console
         console.error("Email delivery failed:", emailError);
