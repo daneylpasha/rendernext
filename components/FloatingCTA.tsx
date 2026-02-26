@@ -3,7 +3,6 @@
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, X, ArrowRight } from "lucide-react";
-import Link from "next/link";
 
 export function FloatingCTA() {
   const [isVisible, setIsVisible] = React.useState(false);
@@ -56,9 +55,7 @@ export function FloatingCTA() {
                 <p className="text-white font-semibold text-sm mb-1">
                   Ready to start?
                 </p>
-                <p className="text-gray-400 text-xs mb-3">
-                  Schedule a free 30-min strategy call
-                </p>
+                
                 <a
                   href="https://calendly.com/rendernext/15min?back=1"
                   target="_blank"
@@ -68,6 +65,24 @@ export function FloatingCTA() {
                   Book a call
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                 </a>
+                <p className="text-gray-400 text-xs mb-3">
+                  Schedule a free 30-min strategy call
+                </p>
+                <button
+                  onClick={() => {
+                    handleDismiss();
+                    window.dispatchEvent(new CustomEvent("open-chat-widget"));
+                  }}
+                  className="inline-flex items-center gap-1.5 text-[#F5A623] text-sm font-semibold hover:text-[#FFB84D] transition-colors group"
+                >
+                  Let's Talk
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                </button>
+                <p className="text-gray-400 text-xs mb-3">
+                  Connect now to talk to our representative directly
+                </p>
+                
+
               </div>
             </div>
 

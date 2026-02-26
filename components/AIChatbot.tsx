@@ -57,7 +57,7 @@ const WELCOME_MESSAGE: Message = {
   id: "welcome",
   role: "assistant",
   content:
-    "Hi! I'm the RenderNext Assistant. I can help you learn about our services, pricing, and how we can bring your digital product ideas to life. What would you like to know?",
+    "Hi! I'm Sara, RenderNext's AI Business Assistant. I can help you explore our services, share pricing ranges, and connect you with the right team. What are you looking to build?",
   timestamp: new Date(),
 };
 
@@ -123,6 +123,37 @@ export function AIChatbot() {
   const generateId = () =>
     `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
+  // Strip any residual markdown and split into paragraphs for multi-bubble
+  function parseAssistantResponse(text: string): string[] {
+    let cleaned = text
+      // Strip bold/italic markers (order matters: triple first)
+      .replace(/\*\*\*(.+?)\*\*\*/g, "$1")
+      .replace(/\*\*(.+?)\*\*/g, "$1")
+      // Strip headers
+      .replace(/^#{1,6}\s+/gm, "")
+      // Strip code blocks
+      .replace(/```[\s\S]*?```/g, "")
+      .replace(/`(.+?)`/g, "$1")
+      // Strip blockquotes and horizontal rules
+      .replace(/^>\s+/gm, "")
+      .replace(/^---+$/gm, "");
+
+    // Convert inline "text * Item:" patterns into paragraph-separated bullets
+    // Gemini often writes: "intro: * **Item1:** desc * **Item2:** desc"
+    cleaned = cleaned
+      .replace(/\s\*\s+/g, "\n\n• ")  // " * " → newline + bullet
+      .replace(/^\*\s+/gm, "• ");     // Leading "* " at line start → bullet
+
+    // Strip any remaining lone asterisks used as italic
+    cleaned = cleaned.replace(/\*(.+?)\*/g, "$1").trim();
+
+    const paragraphs = cleaned
+      .split(/\n\n+/)
+      .map((p) => p.trim())
+      .filter((p) => p.length > 0);
+    return paragraphs.length > 0 ? paragraphs : [cleaned];
+  }
+
   const formatTime = (date: Date) =>
     date.toLocaleTimeString("en-US", {
       hour: "numeric",
@@ -163,9 +194,28 @@ export function AIChatbot() {
   // ─── Close widget (stop call if active) ───────────────────────────────────
 
   const handleClose = useCallback(() => {
+    // Send chat log if user had a real conversation (more than welcome message)
+    if (screen === "chat" && messages.length > 1) {
+      const transcript = messages
+        .map((m) => `[${m.role === "user" ? userInfo.name || "User" : "Sara"}]: ${m.content}`)
+        .join("\n\n");
+      fetch("/api/widget-notify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "chat_log",
+          name: userInfo.name,
+          email: userInfo.email,
+          phone: userInfo.phone ? `${userInfo.countryCode} ${userInfo.phone}`.trim() : "",
+          transcript,
+        }),
+      }).catch(() => {
+        // Non-blocking — ignore errors
+      });
+    }
     stopCall();
     setIsOpen(false);
-  }, [stopCall]);
+  }, [screen, messages, userInfo, stopCall]);
 
   // ─── Back navigation ─────────────────────────────────────────────────────
 
@@ -189,6 +239,13 @@ export function AIChatbot() {
   useEffect(() => {
     scrollToBottom();
   }, [messages, scrollToBottom]);
+
+  // Listen for external open trigger (e.g. FloatingCTA)
+  useEffect(() => {
+    const handler = () => setIsOpen(true);
+    window.addEventListener("open-chat-widget", handler);
+    return () => window.removeEventListener("open-chat-widget", handler);
+  }, []);
 
   // Focus input when chat opens
   useEffect(() => {
@@ -309,15 +366,22 @@ export function AIChatbot() {
 
       const data = await response.json();
 
-      const assistantMessage: Message = {
-        id: generateId(),
-        role: "assistant",
-        content: data.message,
-        timestamp: new Date(),
-      };
-
-      setMessages((prev) => [...prev, assistantMessage]);
       setConsecutiveErrors(0);
+      const paragraphs = parseAssistantResponse(data.message);
+      // Stagger each paragraph as a separate bubble (350ms apart)
+      paragraphs.forEach((paragraph, i) => {
+        setTimeout(() => {
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: generateId(),
+              role: "assistant",
+              content: paragraph,
+              timestamp: new Date(),
+            },
+          ]);
+        }, i * 350);
+      });
     } catch (error) {
       console.error("Chat error:", error);
       const newErrorCount = consecutiveErrors + 1;
@@ -445,7 +509,7 @@ export function AIChatbot() {
   const headerTitle = {
     form: "Get Started",
     "action-select": "How can we help?",
-    chat: "RenderNext Assistant",
+    chat: "Sara — AI Assistant",
     "voice-call": "Voice Call",
   }[screen];
 
