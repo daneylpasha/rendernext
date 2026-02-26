@@ -37,7 +37,7 @@ export function WhatsAppButton() {
           opacity-0 group-hover:opacity-100 transition-opacity duration-300
           pointer-events-none"
       >
-        Chat with us
+        Chat on WhatsApp!
       </span>
     </a>
   );
