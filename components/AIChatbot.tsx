@@ -109,7 +109,7 @@ export function AIChatbot() {
 
   // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const retellClientRef = useRef<RetellWebClient | null>(null);
   const callTimerRef = useRef<NodeJS.Timeout | null>(null);
   const countryDropdownRef = useRef<HTMLDivElement>(null);
@@ -348,6 +348,9 @@ export function AIChatbot() {
 
     setMessages((prev) => [...prev, userMessage]);
     setInputValue("");
+    if (inputRef.current) {
+      inputRef.current.style.height = "auto";
+    }
     setIsLoading(true);
 
     try {
@@ -404,11 +407,18 @@ export function AIChatbot() {
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       sendMessage();
     }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInputValue(e.target.value);
+    const el = e.target;
+    el.style.height = "auto";
+    el.style.height = Math.min(el.scrollHeight, 120) + "px";
   };
 
   // ─── Voice Call ───────────────────────────────────────────────────────────
@@ -955,18 +965,20 @@ export function AIChatbot() {
 
                   {/* Input Area */}
                   <div className="p-4 bg-white border-t border-gray-200 shrink-0">
-                    <div className="flex items-center gap-2">
-                      <input
+                    <div className="flex items-end gap-2">
+                      <textarea
                         ref={inputRef}
-                        type="text"
+                        rows={1}
                         value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
+                        onChange={handleInputChange}
                         onKeyDown={handleKeyDown}
                         placeholder="Type your message..."
                         disabled={isLoading}
-                        className="flex-1 px-4 py-2.5 bg-gray-100 rounded-full text-sm text-gray-800
+                        className="flex-1 px-4 py-2.5 bg-gray-100 rounded-2xl text-sm text-gray-800
                           placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-accent/50
-                          disabled:opacity-50 disabled:cursor-not-allowed"
+                          disabled:opacity-50 disabled:cursor-not-allowed resize-none overflow-y-auto
+                          leading-5"
+                        style={{ minHeight: "40px", maxHeight: "120px" }}
                       />
                       <button
                         onClick={sendMessage}
