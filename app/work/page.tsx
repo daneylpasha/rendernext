@@ -28,6 +28,8 @@ import {
   Truck,
   HandHeart,
   CreditCard,
+  ChefHat,
+  Brain,
 } from "lucide-react";
 
 // Animation variants
@@ -390,6 +392,26 @@ function FeaturedProjectSection() {
 // Project Showcase Grid Section
 function ProjectsGridSection() {
   const projects = [
+    {
+      category: "SaaS / Catering",
+      icon: ChefHat,
+      name: "CBMS",
+      description: "Multi-tenant catering business management platform",
+      tech: ["React Native", "Supabase", "Next.js"],
+      gradient: "from-orange-500 to-red-600",
+      featuredImage: "/work/cbms/images/dashboard-home.jpeg",
+      link: "/work/cbms",
+    },
+    {
+      category: "AI / Fitness",
+      icon: Brain,
+      name: "MarchBuddy",
+      description: "AI-powered fitness coach for running, workouts & nutrition",
+      tech: ["React Native", "AI/ML", "Supabase"],
+      gradient: "from-lime-500 to-emerald-600",
+      featuredImage: "/work/marchbuddy/images/05.png",
+      link: "/work/marchbuddy",
+    },
     {
       category: "Health & Fitness",
       icon: Activity,
