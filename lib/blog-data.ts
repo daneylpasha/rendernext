@@ -373,12 +373,12 @@ But that's not helpful. So let's break down what actually drives costs and give 
 
 ## The Short Answer
 
-For a quality mobile app in 2025:
+For a quality mobile app in 2026:
 
 | App Complexity | Price Range | Timeline |
 |----------------|-------------|----------|
-| Simple MVP | $15,000 - $30,000 | 4-6 weeks |
-| Medium Complexity | $30,000 - $75,000 | 8-12 weeks |
+| Simple MVP | $5,000 - $25,000 | 4-6 weeks |
+| Medium Complexity | $25,000 - $75,000 | 8-12 weeks |
 | Complex App | $75,000 - $150,000+ | 3-6 months |
 
 ## What Determines Cost?
