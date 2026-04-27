@@ -203,6 +203,13 @@ export function Footer() {
                   >
                     Terms of Service
                   </Link>
+                  <span className="text-gray-600">•</span>
+                  <Link
+                    href="/refund-policy"
+                    className="text-gray-500 hover:text-[#F5A623] text-sm transition-colors duration-200"
+                  >
+                    Refund Policy
+                  </Link>
                 </div>
               </div>
             </div>
