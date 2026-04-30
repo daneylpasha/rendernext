@@ -71,6 +71,8 @@ const screenTransition = {
 // Default country: US
 const DEFAULT_COUNTRY = countryCodes[0];
 
+type RetellWebClient = InstanceType<typeof import("retell-client-js-sdk").RetellWebClient>;
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function AIChatbot() {
@@ -114,9 +116,7 @@ export function AIChatbot() {
   const callTimerRef = useRef<NodeJS.Timeout | null>(null);
   const countryDropdownRef = useRef<HTMLDivElement>(null);
 
-  // ─── Retell SDK type (dynamically imported) ───────────────────────────────
-
-  type RetellWebClient = InstanceType<typeof import("retell-client-js-sdk").RetellWebClient>;
+  // ─── Helpers ──────────────────────────────────────────────────────────────
 
   // ─── Helpers ──────────────────────────────────────────────────────────────
 
@@ -139,7 +139,6 @@ export function AIChatbot() {
       .replace(/^---+$/gm, "");
 
     // Convert inline "text * Item:" patterns into paragraph-separated bullets
-    // Gemini often writes: "intro: * **Item1:** desc * **Item2:** desc"
     cleaned = cleaned
       .replace(/\s\*\s+/g, "\n\n• ")  // " * " → newline + bullet
       .replace(/^\*\s+/gm, "• ");     // Leading "* " at line start → bullet
@@ -1134,7 +1133,6 @@ export function AIChatbot() {
                       <div className="flex flex-col gap-2 w-full max-w-[200px]">
                         <button
                           onClick={() => {
-                            setVoiceStatus("idle");
                             setCallDuration(0);
                             startVoiceCall();
                           }}
@@ -1176,7 +1174,6 @@ export function AIChatbot() {
                       <div className="flex flex-col gap-2 w-full max-w-[200px]">
                         <button
                           onClick={() => {
-                            setVoiceStatus("idle");
                             setCallDuration(0);
                             startVoiceCall();
                           }}

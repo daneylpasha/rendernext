@@ -1,38 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createRateLimiter } from "@/lib/rateLimit";
+import { escapeHtml } from "@/lib/escapeHtml";
 
-// Rate limiting - 5 per hour per IP
-const rateLimitStore = new Map<string, { count: number; lastReset: number }>();
-const RATE_LIMIT_WINDOW = 60 * 60 * 1000; // 1 hour
-const MAX_REQUESTS = 5;
-
-function getRateLimitKey(request: NextRequest): string {
-  const forwarded = request.headers.get("x-forwarded-for");
-  const ip = forwarded ? forwarded.split(",")[0] : "unknown";
-  return `widget:${ip}`;
-}
-
-function checkRateLimit(key: string): { allowed: boolean; remaining: number } {
-  const now = Date.now();
-  const record = rateLimitStore.get(key);
-
-  if (!record || now - record.lastReset > RATE_LIMIT_WINDOW) {
-    rateLimitStore.set(key, { count: 1, lastReset: now });
-    return { allowed: true, remaining: MAX_REQUESTS - 1 };
-  }
-
-  if (record.count >= MAX_REQUESTS) {
-    return { allowed: false, remaining: 0 };
-  }
-
-  record.count += 1;
-  return { allowed: true, remaining: MAX_REQUESTS - record.count };
-}
+const checkRateLimit = createRateLimiter(60 * 60 * 1000, 5, "widget:");
 
 export async function POST(request: NextRequest) {
   try {
     // Rate limiting
-    const rateLimitKey = getRateLimitKey(request);
-    const { allowed, remaining } = checkRateLimit(rateLimitKey);
+    const { allowed, remaining } = checkRateLimit(request);
 
     if (!allowed) {
       return NextResponse.json(
@@ -41,7 +16,7 @@ export async function POST(request: NextRequest) {
           status: 429,
           headers: {
             "X-RateLimit-Remaining": "0",
-            "X-RateLimit-Reset": String(RATE_LIMIT_WINDOW / 1000),
+            "X-RateLimit-Reset": "3600",
           },
         }
       );
@@ -81,12 +56,12 @@ export async function POST(request: NextRequest) {
               subject: `Chat Log — ${logData.name}`,
               html: `
                 <h2>Sara AI Chat Log</h2>
-                <p><strong>Name:</strong> ${logData.name}</p>
-                <p><strong>Email:</strong> ${logData.email || "Not provided"}</p>
-                <p><strong>Phone:</strong> ${logData.phone}</p>
+                <p><strong>Name:</strong> ${escapeHtml(logData.name)}</p>
+                <p><strong>Email:</strong> ${escapeHtml(logData.email || "Not provided")}</p>
+                <p><strong>Phone:</strong> ${escapeHtml(logData.phone)}</p>
                 <hr />
                 <h3>Conversation Transcript</h3>
-                <pre style="background:#f5f5f5;padding:16px;border-radius:8px;font-size:13px;line-height:1.6;white-space:pre-wrap;font-family:monospace;">${logData.transcript}</pre>
+                <pre style="background:#f5f5f5;padding:16px;border-radius:8px;font-size:13px;line-height:1.6;white-space:pre-wrap;font-family:monospace;">${escapeHtml(logData.transcript)}</pre>
                 <hr />
                 <p><em>Chat closed at: ${logData.closedAt}</em></p>
               `,
@@ -151,9 +126,9 @@ export async function POST(request: NextRequest) {
             subject: `New Widget Contact: ${sanitizedData.name}`,
             html: `
               <h2>New Widget Contact</h2>
-              <p><strong>Name:</strong> ${sanitizedData.name}</p>
-              <p><strong>Email:</strong> ${sanitizedData.email}</p>
-              <p><strong>Phone:</strong> ${sanitizedData.phone}</p>
+              <p><strong>Name:</strong> ${escapeHtml(sanitizedData.name)}</p>
+              <p><strong>Email:</strong> ${escapeHtml(sanitizedData.email)}</p>
+              <p><strong>Phone:</strong> ${escapeHtml(sanitizedData.phone)}</p>
               <hr />
               <p><em>Submitted at: ${sanitizedData.submittedAt}</em></p>
               <p><em>Source: Chat/Voice Widget</em></p>

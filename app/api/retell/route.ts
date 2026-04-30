@@ -1,34 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createRateLimiter } from "@/lib/rateLimit";
 
-// Rate limiting - 3 calls per minute per IP
-const rateLimitStore = new Map<string, { count: number; lastReset: number }>();
-const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
-const MAX_REQUESTS = 3;
+const checkRateLimit = createRateLimiter(60 * 1000, 3, "retell:");
 
-function getRateLimitKey(request: NextRequest): string {
-  const forwarded = request.headers.get("x-forwarded-for");
-  const ip = forwarded ? forwarded.split(",")[0] : "unknown";
-  return `retell:${ip}`;
-}
-
-function checkRateLimit(key: string): { allowed: boolean; remaining: number } {
-  const now = Date.now();
-  const record = rateLimitStore.get(key);
-
-  if (!record || now - record.lastReset > RATE_LIMIT_WINDOW) {
-    rateLimitStore.set(key, { count: 1, lastReset: now });
-    return { allowed: true, remaining: MAX_REQUESTS - 1 };
-  }
-
-  if (record.count >= MAX_REQUESTS) {
-    return { allowed: false, remaining: 0 };
-  }
-
-  record.count += 1;
-  return { allowed: true, remaining: MAX_REQUESTS - record.count };
-}
-
-const RETELL_AGENT_ID = "agent_fdab41282cad0d692512434a4f";
+const RETELL_AGENT_ID = process.env.RETELL_AGENT_ID ?? "agent_fdab41282cad0d692512434a4f";
 
 export async function POST(request: NextRequest) {
   try {
@@ -42,8 +17,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Rate limiting
-    const rateLimitKey = getRateLimitKey(request);
-    const { allowed, remaining } = checkRateLimit(rateLimitKey);
+    const { allowed, remaining } = checkRateLimit(request);
 
     if (!allowed) {
       return NextResponse.json(
@@ -52,7 +26,7 @@ export async function POST(request: NextRequest) {
           status: 429,
           headers: {
             "X-RateLimit-Remaining": "0",
-            "X-RateLimit-Reset": String(RATE_LIMIT_WINDOW / 1000),
+            "X-RateLimit-Reset": "60",
           },
         }
       );
