@@ -20,7 +20,6 @@ import {
   ShoppingCart,
   GraduationCap,
   Truck,
-  BookOpen,
   Calculator,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -92,32 +91,19 @@ export function Navigation() {
   const [mobileOpenDropdown, setMobileOpenDropdown] = React.useState<string | null>(null);
   const pathname = usePathname();
 
-  // Pages that should use light (white) header style
   const useLightHeader = pathname.startsWith("/blog");
 
-  // Handle scroll state
   React.useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Lock body scroll when mobile menu is open
   React.useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
+    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
   }, [isMobileMenuOpen]);
 
-  // Close mobile menu on route change
   React.useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [pathname]);
@@ -126,18 +112,27 @@ export function Navigation() {
     <>
       <header
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-          isScrolled || useLightHeader
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
+          useLightHeader
             ? "bg-white/95 backdrop-blur-sm shadow-sm"
-            : "bg-gradient-to-b from-black/60 to-transparent"
+            : isScrolled
+              ? "bg-[#0e0e0e]/95 backdrop-blur-2xl border-b border-white/[0.10] shadow-xl shadow-black/30"
+              : "bg-[#141414]/80 backdrop-blur-xl border-b border-white/[0.06]"
         )}
       >
+        {/* Amber accent line */}
+        {!useLightHeader && (
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#F5A623]/60 to-transparent" />
+        )}
+
         <Container>
           <nav className="flex items-center justify-between h-20">
             {/* Logo */}
             <Link href="/" className="flex items-center z-10">
               <Image
-                src={isScrolled || useLightHeader ? "/assets/logos/Logo_500w-H-light-trans.png" : "/assets/logos/Logo_500w-H-dark-trans.png"}
+                src={useLightHeader
+                  ? "/assets/logos/Logo_500w-H-light-trans.png"
+                  : "/assets/logos/Logo_500w-H-dark-trans.png"}
                 alt="RenderNext"
                 width={160}
                 height={40}
@@ -159,9 +154,9 @@ export function Navigation() {
                     <button
                       className={cn(
                         "flex items-center gap-1 text-sm font-medium transition-colors duration-300 group",
-                        isScrolled || useLightHeader
+                        useLightHeader
                           ? "text-gray-600 hover:text-gray-900"
-                          : "text-white/80 hover:text-white"
+                          : "text-white/65 hover:text-white"
                       )}
                     >
                       {link.label}
@@ -173,7 +168,7 @@ export function Navigation() {
                       />
                       <span
                         className={cn(
-                          "absolute -bottom-1 left-0 h-0.5 bg-accent transition-all duration-300",
+                          "absolute -bottom-1 left-0 h-0.5 bg-[#F5A623] transition-all duration-300",
                           openDropdown === link.dropdownType ? "w-full" : "w-0 group-hover:w-full"
                         )}
                       />
@@ -183,17 +178,17 @@ export function Navigation() {
                       href={link.href}
                       className={cn(
                         "relative text-sm font-medium transition-colors duration-300 group",
-                        isScrolled || useLightHeader
+                        useLightHeader
                           ? "text-gray-600 hover:text-gray-900"
-                          : "text-white/80 hover:text-white",
+                          : "text-white/65 hover:text-white",
                         pathname === link.href &&
-                          (isScrolled || useLightHeader ? "text-gray-900" : "text-white")
+                          (useLightHeader ? "!text-gray-900" : "!text-white")
                       )}
                     >
                       {link.label}
                       <span
                         className={cn(
-                          "absolute -bottom-1 left-0 h-0.5 bg-accent transition-all duration-300",
+                          "absolute -bottom-1 left-0 h-0.5 bg-[#F5A623] transition-all duration-300",
                           pathname === link.href ? "w-full" : "w-0 group-hover:w-full"
                         )}
                       />
@@ -205,38 +200,48 @@ export function Navigation() {
                     <AnimatePresence>
                       {openDropdown === "services" && (
                         <motion.div
-                          initial={{ opacity: 0, y: 10 }}
+                          initial={{ opacity: 0, y: 8 }}
                           animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 10 }}
-                          transition={{ duration: 0.2 }}
+                          exit={{ opacity: 0, y: 8 }}
+                          transition={{ duration: 0.18 }}
                           className="absolute top-full left-1/2 -translate-x-1/2 pt-4"
                         >
-                          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 w-[600px]">
-                            <div className="grid grid-cols-2 gap-4">
+                          <div
+                            className="rounded-2xl p-6 w-[600px]"
+                            style={{
+                              background: "rgba(12,12,12,0.97)",
+                              backdropFilter: "blur(24px)",
+                              border: "1px solid rgba(255,255,255,0.10)",
+                              boxShadow: "0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(245,166,35,0.06)",
+                            }}
+                          >
+                            {/* Top accent */}
+                            <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-[#F5A623]/30 to-transparent" />
+                            <div className="grid grid-cols-2 gap-2">
                               {services.map((service) => (
                                 <Link
                                   key={service.href}
                                   href={service.href}
-                                  className="flex items-start gap-4 p-3 rounded-xl hover:bg-gray-50 transition-colors group"
+                                  className="flex items-start gap-3 p-3 rounded-xl hover:bg-white/[0.05] transition-colors group"
                                 >
-                                  <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
-                                    <service.icon className="h-5 w-5 text-accent" />
+                                  <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-[#F5A623]/12 flex items-center justify-center group-hover:bg-[#F5A623]/20 transition-colors">
+                                    <service.icon className="h-4 w-4 text-[#F5A623]" />
                                   </div>
                                   <div>
-                                    <div className="font-medium text-gray-900 group-hover:text-accent transition-colors">
+                                    <div className="font-semibold text-white/85 group-hover:text-white transition-colors text-sm">
                                       {service.title}
                                     </div>
-                                    <div className="text-sm text-gray-500">
+                                    <div className="text-xs text-white/35 mt-0.5 leading-relaxed">
                                       {service.description}
                                     </div>
                                   </div>
                                 </Link>
                               ))}
                             </div>
-                            <div className="mt-4 pt-4 border-t border-gray-100">
+                            <div className="mt-4 pt-4 border-t border-white/[0.07]">
                               <Link
                                 href="/services"
-                                className="text-sm font-medium text-accent hover:text-accent-dark transition-colors"
+                                className="text-sm font-semibold text-[#F5A623] hover:text-[#FFB84D] transition-colors"
                               >
                                 View all services →
                               </Link>
@@ -252,33 +257,42 @@ export function Navigation() {
                     <AnimatePresence>
                       {openDropdown === "industries" && (
                         <motion.div
-                          initial={{ opacity: 0, y: 10 }}
+                          initial={{ opacity: 0, y: 8 }}
                           animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 10 }}
-                          transition={{ duration: 0.2 }}
+                          exit={{ opacity: 0, y: 8 }}
+                          transition={{ duration: 0.18 }}
                           className="absolute top-full left-1/2 -translate-x-1/2 pt-4"
                         >
-                          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-5 w-[400px]">
-                            <div className="grid grid-cols-2 gap-2">
+                          <div
+                            className="rounded-2xl p-5 w-[380px]"
+                            style={{
+                              background: "rgba(12,12,12,0.97)",
+                              backdropFilter: "blur(24px)",
+                              border: "1px solid rgba(255,255,255,0.10)",
+                              boxShadow: "0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(245,166,35,0.06)",
+                            }}
+                          >
+                            <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-[#F5A623]/30 to-transparent" />
+                            <div className="grid grid-cols-2 gap-1.5">
                               {industries.map((industry) => (
                                 <Link
                                   key={industry.href}
                                   href={industry.href}
-                                  className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors group"
+                                  className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/[0.05] transition-colors group"
                                 >
-                                  <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
-                                    <industry.icon className="h-4 w-4 text-accent" />
+                                  <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-[#F5A623]/12 flex items-center justify-center group-hover:bg-[#F5A623]/20 transition-colors">
+                                    <industry.icon className="h-3.5 w-3.5 text-[#F5A623]" />
                                   </div>
-                                  <span className="font-medium text-gray-900 group-hover:text-accent transition-colors text-sm">
+                                  <span className="font-medium text-white/75 group-hover:text-white transition-colors text-sm">
                                     {industry.title}
                                   </span>
                                 </Link>
                               ))}
                             </div>
-                            <div className="mt-3 pt-3 border-t border-gray-100">
+                            <div className="mt-3 pt-3 border-t border-white/[0.07]">
                               <Link
                                 href="/industries"
-                                className="text-sm font-medium text-accent hover:text-accent-dark transition-colors"
+                                className="text-sm font-semibold text-[#F5A623] hover:text-[#FFB84D] transition-colors"
                               >
                                 View all industries →
                               </Link>
@@ -293,14 +307,14 @@ export function Navigation() {
             </div>
 
             {/* Desktop CTA */}
-            <div className="hidden xl:flex items-center gap-3">
+            <div className="hidden xl:flex items-center gap-4">
               <Link
                 href="/estimate"
                 className={cn(
                   "flex items-center gap-1.5 text-sm font-medium transition-colors",
-                  isScrolled || useLightHeader
-                    ? "text-gray-600 hover:text-accent"
-                    : "text-white/80 hover:text-accent"
+                  useLightHeader
+                    ? "text-gray-600 hover:text-[#F5A623]"
+                    : "text-white/55 hover:text-[#F5A623]"
                 )}
               >
                 <Calculator className="w-4 h-4" />
@@ -316,9 +330,9 @@ export function Navigation() {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className={cn(
                 "xl:hidden p-2 rounded-lg transition-colors z-10",
-                isScrolled || useLightHeader || isMobileMenuOpen
+                useLightHeader || isMobileMenuOpen
                   ? "text-gray-900 hover:bg-gray-100"
-                  : "text-white hover:bg-white/10"
+                  : "text-white/80 hover:bg-white/10"
               )}
               aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
             >
@@ -360,9 +374,8 @@ export function Navigation() {
             transition={{ type: "tween", duration: 0.3 }}
             className="fixed inset-0 z-40 xl:hidden"
           >
-            <div className="absolute inset-0 bg-bg-dark" />
+            <div className="absolute inset-0 bg-[#0c0c0c]" />
             <div className="relative h-full flex flex-col pt-24 pb-8 px-6">
-              {/* Mobile Nav Links */}
               <nav className="flex-1 flex flex-col items-center justify-center gap-6">
                 {navLinks.map((link, index) => (
                   <motion.div
@@ -375,7 +388,9 @@ export function Navigation() {
                     {link.hasDropdown ? (
                       <div>
                         <button
-                          onClick={() => setMobileOpenDropdown(mobileOpenDropdown === link.dropdownType ? null : link.dropdownType || null)}
+                          onClick={() => setMobileOpenDropdown(
+                            mobileOpenDropdown === link.dropdownType ? null : link.dropdownType || null
+                          )}
                           className="w-full flex items-center justify-center gap-2 text-xl font-semibold text-white"
                         >
                           {link.label}
@@ -400,24 +415,20 @@ export function Navigation() {
                                   <Link
                                     key={service.href}
                                     href={service.href}
-                                    className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
+                                    className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition-colors"
                                   >
-                                    <service.icon className="h-5 w-5 text-accent" />
-                                    <span className="text-white/80">
-                                      {service.title}
-                                    </span>
+                                    <service.icon className="h-5 w-5 text-[#F5A623]" />
+                                    <span className="text-white/80">{service.title}</span>
                                   </Link>
                                 ))}
                                 {link.dropdownType === "industries" && industries.map((industry) => (
                                   <Link
                                     key={industry.href}
                                     href={industry.href}
-                                    className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
+                                    className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition-colors"
                                   >
-                                    <industry.icon className="h-5 w-5 text-accent" />
-                                    <span className="text-white/80">
-                                      {industry.title}
-                                    </span>
+                                    <industry.icon className="h-5 w-5 text-[#F5A623]" />
+                                    <span className="text-white/80">{industry.title}</span>
                                   </Link>
                                 ))}
                               </div>
@@ -430,9 +441,7 @@ export function Navigation() {
                         href={link.href}
                         className={cn(
                           "block text-center text-xl font-semibold transition-colors",
-                          pathname === link.href
-                            ? "text-white"
-                            : "text-white/60 hover:text-white"
+                          pathname === link.href ? "text-white" : "text-white/55 hover:text-white"
                         )}
                       >
                         {link.label}
@@ -442,7 +451,6 @@ export function Navigation() {
                 ))}
               </nav>
 
-              {/* Mobile CTA */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

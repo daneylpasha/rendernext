@@ -119,10 +119,13 @@ export function Process() {
 
                   {/* Step Content */}
                   <div className="mt-6">
+                    <div className="w-10 h-10 rounded-xl bg-[#F5A623]/10 flex items-center justify-center mx-auto mb-3">
+                      <step.icon className="w-5 h-5 text-[#F5A623]" />
+                    </div>
                     <h3 className="font-heading text-lg font-bold text-gray-900 leading-tight tracking-tight mb-3">
                       {step.title}
                     </h3>
-                    <p className="text-gray-600 font-normal text-sm leading-relaxed max-w-[200px] mx-auto">
+                    <p className="text-gray-500 font-normal text-sm leading-relaxed max-w-[200px] mx-auto">
                       {step.description}
                     </p>
                   </div>
@@ -178,10 +181,15 @@ export function Process() {
 
                   {/* Step Content */}
                   <div className="flex-1 pb-2">
-                    <h3 className="font-heading text-lg font-bold text-gray-900 leading-tight tracking-tight mb-2">
-                      {step.title}
-                    </h3>
-                    <p className="text-gray-600 font-normal text-sm leading-relaxed">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-8 h-8 rounded-lg bg-[#F5A623]/10 flex items-center justify-center flex-shrink-0">
+                        <step.icon className="w-4 h-4 text-[#F5A623]" />
+                      </div>
+                      <h3 className="font-heading text-lg font-bold text-gray-900 leading-tight tracking-tight">
+                        {step.title}
+                      </h3>
+                    </div>
+                    <p className="text-gray-500 font-normal text-sm leading-relaxed">
                       {step.description}
                     </p>
                   </div>

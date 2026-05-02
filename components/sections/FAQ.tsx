@@ -3,82 +3,65 @@
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
-import {
-  Container,
-  FadeInUp,
-  StaggerContainer,
-  StaggerItem,
-} from "@/components/ui";
+import { Container, FadeInUp } from "@/components/ui";
 
 const faqs = [
   {
     question: "How long does it take to build an app?",
-    answer:
-      "Typically 8-12 weeks for an MVP, 3-6 months for a full-featured app. Timeline depends on complexity, features, and scope. We'll give you a realistic estimate after our discovery call.",
+    answer: "Typically 8-12 weeks for an MVP, 3-6 months for a full-featured app. Timeline depends on complexity, features, and scope. We'll give you a realistic estimate after our discovery call.",
   },
   {
     question: "How much does app development cost?",
-    answer:
-      "Projects typically range from $10,000 to $100,000+ depending on complexity. We offer transparent pricing with no hidden fees. Get a custom quote based on your specific requirements.",
+    answer: "Projects typically range from $10,000 to $100,000+ depending on complexity. We offer transparent pricing with no hidden fees. Get a custom quote based on your specific requirements.",
   },
   {
     question: "Do you work with startups?",
-    answer:
-      "Absolutely. We specialize in helping startups launch MVPs quickly and affordably. Many of our projects are with founders validating their first product idea.",
+    answer: "Absolutely. We specialize in helping startups launch MVPs quickly and affordably. Many of our projects are with founders validating their first product idea.",
   },
   {
     question: "What technologies do you use?",
-    answer:
-      "We primarily use React Native for mobile apps (iOS & Android from one codebase), Next.js for web applications, and Node.js for backends. We also integrate AI solutions using OpenAI and other LLM providers.",
+    answer: "We primarily use React Native for mobile apps (iOS & Android from one codebase), Next.js for web applications, and Node.js for backends. We also integrate AI solutions using OpenAI and other LLM providers.",
   },
   {
     question: "Do I own the code?",
-    answer:
-      "Yes, 100%. You get full ownership of all source code, designs, and assets. No licensing fees, no lock-in. It's your product.",
+    answer: "Yes, 100%. You get full ownership of all source code, designs, and assets. No licensing fees, no lock-in. It's your product.",
   },
   {
     question: "What happens after launch?",
-    answer:
-      "We offer ongoing maintenance and support packages. This includes bug fixes, updates, performance monitoring, and feature additions. We don't disappear after launch.",
+    answer: "We offer ongoing maintenance and support packages. This includes bug fixes, updates, performance monitoring, and feature additions. We don't disappear after launch.",
   },
   {
     question: "Can you work with my existing team?",
-    answer:
-      "Yes. We offer staff augmentation services where our developers integrate with your team. We also collaborate well with existing designers, PMs, and other vendors.",
+    answer: "Yes. We offer staff augmentation services where our developers integrate with your team. We also collaborate well with existing designers, PMs, and other vendors.",
   },
   {
     question: "Where are you located?",
-    answer:
-      "We're based in Austin, Texas, but work with clients worldwide. Most of our communication is async-friendly, with scheduled calls for key milestones.",
+    answer: "We're based in Austin, Texas, but work with clients worldwide. Most of our communication is async-friendly, with scheduled calls for key milestones.",
   },
 ];
 
 function FAQItem({
-  question,
-  answer,
-  isOpen,
-  onToggle,
+  question, answer, isOpen, onToggle,
 }: {
-  question: string;
-  answer: string;
-  isOpen: boolean;
-  onToggle: () => void;
+  question: string; answer: string; isOpen: boolean; onToggle: () => void;
 }) {
   return (
-    <div className="border-b border-gray-200">
+    <div className="border-b border-white/[0.07]">
       <button
         onClick={onToggle}
         className="w-full flex items-center justify-between py-6 text-left group"
       >
-        <span className="text-base lg:text-lg font-bold text-gray-900 leading-snug pr-8 group-hover:text-[#F5A623] transition-colors duration-200">
+        <span className={`text-base lg:text-lg font-bold leading-snug pr-8 transition-colors duration-200
+          ${isOpen ? "text-[#F5A623]" : "text-white/80 group-hover:text-white"}`}>
           {question}
         </span>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.2 }}
-          className="flex-shrink-0"
+          className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200
+            ${isOpen ? "bg-[#F5A623]/20" : "bg-white/[0.05] group-hover:bg-white/[0.09]"}`}
         >
-          <ChevronDown className={`w-5 h-5 transition-colors duration-200 ${isOpen ? "text-[#F5A623]" : "text-gray-400"}`} />
+          <ChevronDown className={`w-4 h-4 transition-colors duration-200 ${isOpen ? "text-[#F5A623]" : "text-white/40"}`} />
         </motion.div>
       </button>
       <AnimatePresence initial={false}>
@@ -90,7 +73,7 @@ function FAQItem({
             transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
             className="overflow-hidden"
           >
-            <p className="text-gray-600 font-normal pb-6 leading-relaxed max-w-3xl">{answer}</p>
+            <p className="text-white/45 pb-6 leading-relaxed max-w-3xl text-sm lg:text-base">{answer}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -101,49 +84,40 @@ function FAQItem({
 export function FAQ() {
   const [openIndex, setOpenIndex] = React.useState<number | null>(0);
 
-  const handleToggle = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
-
   return (
-    <section id="faq" className="bg-white py-20 lg:py-28">
-      <Container>
-        {/* Section Header */}
+    <section id="faq" className="bg-[#141414] py-20 lg:py-28 relative overflow-hidden">
+      {/* Ambient glow */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] pointer-events-none"
+        style={{ background: "radial-gradient(ellipse at center bottom, rgba(245,166,35,0.07) 0%, transparent 65%)" }} />
+
+      <Container className="relative z-10">
         <div className="text-center mb-12">
           <FadeInUp>
-            <span className="inline-block text-sm font-semibold uppercase tracking-widest text-[#F5A623] mb-3">
-              FAQ
-            </span>
+            <span className="inline-block text-xs font-bold uppercase tracking-[0.2em] text-[#F5A623] mb-3">FAQ</span>
           </FadeInUp>
           <FadeInUp delay={0.1}>
-            <h2 className="font-heading text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight tracking-tight mb-6">
+            <h2 className="font-heading text-3xl lg:text-4xl xl:text-5xl font-bold text-white leading-tight tracking-tight mb-5">
               Common Questions
             </h2>
           </FadeInUp>
           <FadeInUp delay={0.2}>
-            <p className="text-gray-600 font-normal text-lg leading-relaxed max-w-2xl mx-auto">
+            <p className="text-white/45 text-lg leading-relaxed max-w-2xl mx-auto">
               Everything you need to know about working with us.
             </p>
           </FadeInUp>
         </div>
 
-        {/* FAQ Accordion */}
-        <StaggerContainer
-          staggerDelay={0.05}
-          delayChildren={0.2}
-          className="max-w-3xl mx-auto mt-12"
-        >
+        <div className="max-w-3xl mx-auto mt-12">
           {faqs.map((faq, index) => (
-            <StaggerItem key={faq.question}>
-              <FAQItem
-                question={faq.question}
-                answer={faq.answer}
-                isOpen={openIndex === index}
-                onToggle={() => handleToggle(index)}
-              />
-            </StaggerItem>
+            <FAQItem
+              key={faq.question}
+              question={faq.question}
+              answer={faq.answer}
+              isOpen={openIndex === index}
+              onToggle={() => setOpenIndex(openIndex === index ? null : index)}
+            />
           ))}
-        </StaggerContainer>
+        </div>
       </Container>
     </section>
   );
