@@ -13,12 +13,12 @@ import {
 } from "@/components/ui";
 
 const promises = [
-  { number: "01", title: "On-Time Delivery Guarantee" },
-  { number: "02", title: "Transparent Pricing" },
-  { number: "03", title: "Weekly Progress Updates" },
-  { number: "04", title: "100% Code Ownership" },
-  { number: "05", title: "Post-Launch Support" },
-  { number: "06", title: "Money-Back Guarantee" },
+  { number: "01", title: "On-Time Delivery Guarantee", desc: "We hit every milestone. Miss a deadline? We work until it ships — at no extra charge." },
+  { number: "02", title: "Transparent Pricing", desc: "No hidden fees, no surprise invoices. Fixed-price milestones agreed upfront." },
+  { number: "03", title: "Weekly Progress Updates", desc: "Live demos and written summaries every Friday so you're never left wondering." },
+  { number: "04", title: "100% Code Ownership", desc: "Everything we build is yours. Full source code, no vendor lock-in, ever." },
+  { number: "05", title: "Post-Launch Support", desc: "30 days of included support after go-live to squash bugs and smooth the rollout." },
+  { number: "06", title: "Money-Back Guarantee", desc: "Not satisfied after the first sprint? We refund your deposit, no questions asked." },
 ];
 
 export function Promises() {
@@ -67,19 +67,21 @@ export function Promises() {
             </FadeInUp>
 
             {/* Big Stats */}
-            <div className="space-y-10">
+            <div className="space-y-8">
               <FadeInLeft delay={0.2}>
-                <p className="text-5xl lg:text-6xl xl:text-7xl font-bold text-[#F5A623] leading-none mb-3">
+                <p className="font-heading font-black text-[#F5A623] leading-none mb-2"
+                  style={{ fontSize: "clamp(5rem, 12vw, 9rem)", lineHeight: 1 }}>
                   <CountUp end={100} suffix="%" duration={2} />
                 </p>
-                <p className="text-gray-400 font-normal text-lg leading-relaxed">Satisfaction Commitment</p>
+                <p className="text-gray-400 text-base leading-relaxed">Client Satisfaction Rate</p>
               </FadeInLeft>
 
               <FadeInLeft delay={0.3}>
-                <p className="text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-none mb-3">
+                <p className="font-heading font-black text-white leading-none mb-2"
+                  style={{ fontSize: "clamp(5rem, 12vw, 9rem)", lineHeight: 1 }}>
                   <CountUp end={24} suffix="/7" duration={2} />
                 </p>
-                <p className="text-gray-400 font-normal text-lg leading-relaxed">Support & Communication</p>
+                <p className="text-gray-400 text-base leading-relaxed">Support & Communication</p>
               </FadeInLeft>
             </div>
           </div>
@@ -94,18 +96,25 @@ export function Promises() {
               {promises.map((promise) => (
                 <StaggerItemRight key={promise.number}>
                   <div
-                    className="p-6 rounded-xl group backdrop-blur-md
-                      bg-white/[0.05] border border-white/10
+                    className="p-6 rounded-xl group backdrop-blur-md relative overflow-hidden
+                      bg-white/[0.04] border border-white/10
                       hover:bg-white/[0.08] hover:border-[#F5A623]/40
-                      transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lg hover:shadow-[#F5A623]/5"
+                      transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lg hover:shadow-[#F5A623]/10"
                   >
-                    <span className="text-[#F5A623] font-mono text-sm font-semibold
-                      group-hover:text-[#F5A623] transition-colors duration-300">
+                    {/* Hover glow corner */}
+                    <div className="absolute -top-6 -right-6 w-16 h-16 rounded-full bg-[#F5A623]/0
+                      group-hover:bg-[#F5A623]/10 transition-all duration-500 blur-xl" />
+
+                    <span className="text-[#F5A623] font-mono text-xs font-semibold tracking-widest">
                       {promise.number}
                     </span>
-                    <h3 className="text-white font-bold text-base lg:text-lg leading-snug mt-3 group-hover:text-[#F5A623] transition-colors duration-300">
+                    <h3 className="text-white font-bold text-base leading-snug mt-2 mb-2
+                      group-hover:text-[#F5A623] transition-colors duration-300">
                       {promise.title}
                     </h3>
+                    <p className="text-gray-500 text-xs leading-relaxed group-hover:text-gray-400 transition-colors duration-300">
+                      {promise.desc}
+                    </p>
                   </div>
                 </StaggerItemRight>
               ))}

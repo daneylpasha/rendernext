@@ -16,23 +16,22 @@ import { Metrics } from "@/components/sections/Metrics";
 export default function Home() {
   return (
     <main>
+      {/* ── Dark zone: Hero → Promises ─────────────────────────── */}
       <Hero />
-      <SectionDivider from="dark" to="light" variant="curve" />
       <TrustBadges />
       <Platforms />
       <Services />
-      <SectionDivider from="light" to="dark" variant="curve" flip />
       <Promises />
-      <SectionDivider from="dark" to="muted" variant="wave" />
+      {/* ── Light zone: Work → Industries ───────────────────────── */}
+      <SectionDivider from="dark" to="light" variant="wave" />
       <Work />
       <FeaturedProduct />
       <Process />
       <Industries />
+      {/* ── Dark zone: TechStack → CTA ──────────────────────────── */}
       <SectionDivider from="light" to="dark" variant="curve" flip />
       <TechStack />
-      <SectionDivider from="dark" to="light" variant="wave" />
       <FAQ />
-      <SectionDivider from="light" to="dark" variant="curve" flip />
       <Metrics />
       <CTA />
     </main>

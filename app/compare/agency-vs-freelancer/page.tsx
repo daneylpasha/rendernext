@@ -244,13 +244,13 @@ const costComparison = [
   {
     category: "Simple App MVP",
     agency: "$50,000 - $150,000",
-    freelancer: "$15,000 - $50,000",
+    freelancer: "$5,000 - $20,000",
     notes: "3-6 month timeline",
   },
   {
     category: "Medium Complexity App",
     agency: "$150,000 - $400,000",
-    freelancer: "$50,000 - $150,000",
+    freelancer: "$25,000 - $75,000",
     notes: "6-12 month timeline",
   },
   {

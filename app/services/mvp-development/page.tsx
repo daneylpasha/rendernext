@@ -471,7 +471,7 @@ function PricingSection() {
               <div className="text-mustard text-sm font-medium uppercase tracking-wider mb-2">
                 Starting From
               </div>
-              <div className="text-6xl font-bold mb-2">$15,000</div>
+              <div className="text-6xl font-bold mb-2">$2,999</div>
               <div className="text-gray-400 mb-8">
                 6-12 weeks depending on complexity
               </div>

@@ -49,7 +49,7 @@ const projects = [
 
 export function Work() {
   return (
-    <section id="work" className="bg-gray-50 py-20 lg:py-28">
+    <section id="work" className="bg-[#F7F7F7] py-20 lg:py-28">
       <Container>
         {/* Section Header */}
         <div className="text-center mb-16">
@@ -80,8 +80,8 @@ export function Work() {
             <StaggerItemScale key={project.title}>
               <div
                 className="bg-white border border-gray-200 rounded-2xl overflow-hidden h-full
-                  transition-all duration-300 ease-out group
-                  hover:-translate-y-2 hover:shadow-2xl hover:border-[#F5A623]/30"
+                  transition-all duration-300 ease-out group shadow-sm
+                  hover:-translate-y-2 hover:shadow-2xl hover:shadow-[#F5A623]/10 hover:border-[#F5A623]/40"
               >
                 {/* Image Area */}
                 <div className={`aspect-video bg-gradient-to-br ${project.gradient} relative overflow-hidden`}>

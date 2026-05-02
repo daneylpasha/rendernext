@@ -1,32 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createRateLimiter } from "@/lib/rateLimit";
+import { escapeHtml } from "@/lib/escapeHtml";
 
-// Rate limiting - simple in-memory store (use Redis in production)
-const rateLimitStore = new Map<string, { count: number; lastReset: number }>();
-const RATE_LIMIT_WINDOW = 60 * 60 * 1000; // 1 hour
-const MAX_REQUESTS = 5; // Max 5 submissions per hour per IP
-
-function getRateLimitKey(request: NextRequest): string {
-  const forwarded = request.headers.get("x-forwarded-for");
-  const ip = forwarded ? forwarded.split(",")[0] : "unknown";
-  return ip;
-}
-
-function checkRateLimit(key: string): { allowed: boolean; remaining: number } {
-  const now = Date.now();
-  const record = rateLimitStore.get(key);
-
-  if (!record || now - record.lastReset > RATE_LIMIT_WINDOW) {
-    rateLimitStore.set(key, { count: 1, lastReset: now });
-    return { allowed: true, remaining: MAX_REQUESTS - 1 };
-  }
-
-  if (record.count >= MAX_REQUESTS) {
-    return { allowed: false, remaining: 0 };
-  }
-
-  record.count += 1;
-  return { allowed: true, remaining: MAX_REQUESTS - record.count };
-}
+const checkRateLimit = createRateLimiter(60 * 60 * 1000, 5);
 
 // Honeypot check - bots often fill hidden fields
 function isBot(formData: Record<string, unknown>): boolean {
@@ -69,8 +45,7 @@ function validateForm(data: Record<string, unknown>): { valid: boolean; errors: 
 export async function POST(request: NextRequest) {
   try {
     // Rate limiting check
-    const rateLimitKey = getRateLimitKey(request);
-    const { allowed, remaining } = checkRateLimit(rateLimitKey);
+    const { allowed, remaining } = checkRateLimit(request);
 
     if (!allowed) {
       return NextResponse.json(
@@ -79,7 +54,7 @@ export async function POST(request: NextRequest) {
           status: 429,
           headers: {
             "X-RateLimit-Remaining": "0",
-            "X-RateLimit-Reset": String(RATE_LIMIT_WINDOW / 1000),
+            "X-RateLimit-Reset": "3600",
           },
         }
       );
@@ -135,7 +110,7 @@ export async function POST(request: NextRequest) {
     // Send via email service (Resend, SendGrid, etc.) if configured
     if (process.env.RESEND_API_KEY) {
       try {
-        await fetch("https://api.resend.com/emails", {
+        const emailRes = await fetch("https://api.resend.com/emails", {
           method: "POST",
           headers: {
             "Authorization": `Bearer ${process.env.RESEND_API_KEY}`,
@@ -144,23 +119,29 @@ export async function POST(request: NextRequest) {
           body: JSON.stringify({
             from: "RenderNext <noreply@rendernext.io>",
             to: targetEmail,
+            reply_to: emailData.email,
             subject: `New Contact Form: ${emailData.projectType} - ${emailData.name}`,
             html: `
               <h2>New Contact Form Submission</h2>
-              <p><strong>Name:</strong> ${emailData.name}</p>
-              <p><strong>Email:</strong> ${emailData.email}</p>
-              <p><strong>Phone:</strong> ${emailData.phone}</p>
-              <p><strong>Company:</strong> ${emailData.company}</p>
-              <p><strong>Project Type:</strong> ${emailData.projectType}</p>
-              <p><strong>Budget:</strong> ${emailData.budget}</p>
-              <p><strong>How they heard about us:</strong> ${emailData.hearAbout}</p>
+              <p><strong>Name:</strong> ${escapeHtml(emailData.name)}</p>
+              <p><strong>Email:</strong> ${escapeHtml(emailData.email)}</p>
+              <p><strong>Phone:</strong> ${escapeHtml(emailData.phone)}</p>
+              <p><strong>Company:</strong> ${escapeHtml(emailData.company)}</p>
+              <p><strong>Project Type:</strong> ${escapeHtml(emailData.projectType)}</p>
+              <p><strong>Budget:</strong> ${escapeHtml(emailData.budget)}</p>
+              <p><strong>How they heard about us:</strong> ${escapeHtml(emailData.hearAbout)}</p>
               <p><strong>Description:</strong></p>
-              <p>${emailData.description}</p>
+              <p>${escapeHtml(emailData.description)}</p>
               <hr />
               <p><em>Submitted at: ${emailData.submittedAt}</em></p>
             `,
           }),
         });
+        if (!emailRes.ok) {
+          const errBody = await emailRes.text();
+          // eslint-disable-next-line no-console
+          console.error("Resend API error:", emailRes.status, errBody);
+        }
       } catch (emailError) {
         // eslint-disable-next-line no-console
         console.error("Email delivery failed:", emailError);

@@ -1,83 +1,126 @@
 import { NextRequest, NextResponse } from "next/server";
+import Anthropic from "@anthropic-ai/sdk";
+import { createRateLimiter } from "@/lib/rateLimit";
 
-// Rate limiting - simple in-memory store
-const rateLimitStore = new Map<string, { count: number; lastReset: number }>();
-const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
-const MAX_REQUESTS = 10; // Max 10 messages per minute per IP
+const checkRateLimit = createRateLimiter(60 * 1000, 10);
 
-function getRateLimitKey(request: NextRequest): string {
-  const forwarded = request.headers.get("x-forwarded-for");
-  const ip = forwarded ? forwarded.split(",")[0] : "unknown";
-  return ip;
-}
+// ─── Sara: AI Business Assistant for RenderNext ───────────────────────────────
 
-function checkRateLimit(key: string): { allowed: boolean; remaining: number } {
-  const now = Date.now();
-  const record = rateLimitStore.get(key);
+const SYSTEM_PROMPT = `You are Sara, the AI Business Assistant for Render Next LLC — a US-based digital product studio specializing in web apps, mobile apps, and AI automation.
 
-  if (!record || now - record.lastReset > RATE_LIMIT_WINDOW) {
-    rateLimitStore.set(key, { count: 1, lastReset: now });
-    return { allowed: true, remaining: MAX_REQUESTS - 1 };
-  }
+Your job is to have warm, human conversations with website visitors, understand what they need, and guide serious prospects toward booking a discovery call. You are the first point of contact — think of yourself as a smart, friendly sales development rep who genuinely wants to help.
 
-  if (record.count >= MAX_REQUESTS) {
-    return { allowed: false, remaining: 0 };
-  }
+RESPONSE FORMAT — CRITICAL:
+Never use markdown in responses. No bold (**), no italics (*), no headers (#), no bullet dashes (-), no backticks, no horizontal rules.
+Use plain conversational text only.
+For lists, use a bullet symbol • at the start of each item on its own line.
+Keep responses short — 2 to 3 short paragraphs max. If a thought is complex, break it into two separate bubbles by leaving a blank line between paragraphs.
+Never write walls of text.
 
-  record.count += 1;
-  return { allowed: true, remaining: MAX_REQUESTS - record.count };
-}
+TONE:
+Warm, confident, and professional — like a knowledgeable colleague, not a corporate bot.
+Open messages with short human phrases: "Sure!", "Got it!", "Absolutely!", "Happy to help!", "Great question!"
+Use 1–2 natural emojis per response max (😊 🚀 💡 📅 ✅ 👍).
+Never oversell. Never sound scripted. Ask follow-up questions when needed.
 
-// System prompt for the RenderNext assistant
-const SYSTEM_PROMPT = `You are the RenderNext AI Assistant, a helpful and knowledgeable representative of RenderNext, a digital product studio based in Austin, Texas.
+CONVERSION STRATEGY:
+Your primary goal is to qualify visitors and move serious prospects toward a 30-minute discovery call.
+Listen first. Understand their project, their timeline, and their pain point before suggesting anything.
+When a prospect mentions building something — an app, a platform, an AI tool, a website — ask a short clarifying question to understand scope.
+Once you have enough context, introduce the discovery call naturally: "The best next step would be a quick 30-minute session with our team — we'd map out a technical approach specific to your project."
+Discovery call link: https://calendly.com/rendernext/15min
 
-## About RenderNext
-RenderNext is a full-service digital product studio specializing in:
-- Mobile App Development (React Native, iOS, Android)
-- Web Development (Next.js, React, Node.js)
-- AI Solutions & Integration
-- UI/UX Design
-- MVP Development for startups
-- Ongoing Maintenance & Support
+QUALIFICATION SIGNALS — shift into discovery call mode when you see:
+MVP, budget, launch date, team size, scaling, enterprise, SaaS, automation, funding, investor, deadline
 
-## Key Information
-- Location: Austin, Texas (but works with clients globally)
-- Team: Experienced developers, designers, and project managers
-- Approach: Collaborative, agile, and focused on quality
+PRICING — if asked:
+"Our pricing is transparent and typically 30–50% more cost-efficient than standard US agencies. Exact numbers depend on your scope and feature set — the discovery call is where we nail that down properly."
+If budget mentioned is under $500: politely explain that projects start higher due to the engineering and strategy involved, but stay warm.
+If budget is $1,000+ or they're scaling: move toward booking a call.
 
-## Pricing Guidance (General Ranges)
-When discussing pricing, be helpful but encourage booking a call for accurate quotes:
+GENERAL PRICING REFERENCE (share if directly asked, don't volunteer upfront):
+• MVP Mobile App: $15K–$25K, 8–10 weeks
+• Standard Mobile App: $25K–$50K, 10–14 weeks
+• Enterprise App: $50K+, custom timeline
+• Web App / SaaS: project-based, from $10K
+• UI/UX Design: $1K–$5K
+• Maintenance: from $1,500/mo
+• Hourly rate: $35–$60/hr
 
-- Simple Landing Page / Marketing Site: $3,000 - $10,000
-- Small Web Application: $10,000 - $30,000
-- Medium Web Application: $30,000 - $75,000
-- Large/Complex Web Application: $75,000 - $200,000+
-- Simple Mobile App (single platform): $15,000 - $40,000
-- Medium Mobile App (cross-platform): $40,000 - $100,000
-- Complex Mobile App: $100,000 - $300,000+
-- MVP Development: $20,000 - $80,000 (depending on scope)
-- UI/UX Design: $5,000 - $30,000
-- AI Integration/Chatbot: $10,000 - $50,000
-- Monthly Maintenance: $1,000 - $5,000/month
+JOB SEEKERS:
+"Thanks for reaching out! Please send your resume to info@rendernext.io — our team reviews all applications."
+Do not engage further on hiring topics.
 
-Note: These are rough estimates. Actual pricing depends on specific requirements, timeline, and complexity.
+VENDOR / SALES OUTREACH:
+"We typically evaluate partnerships offline. Feel free to send details to info@rendernext.io and we'll review them."
 
-## Your Behavior Guidelines
-1. Be friendly, professional, and helpful
-2. Provide useful information about services and general pricing
-3. Always encourage booking a discovery call for detailed discussions and accurate quotes
-4. If asked about specific technical implementations, provide general guidance
-5. Don't make specific promises about timelines or exact costs
-6. Redirect complex questions to the contact form or booking a call
-7. Keep responses concise but informative (2-4 paragraphs max)
-8. If you don't know something specific about RenderNext, say so honestly
+HARD LIMITS:
+No custom quotes or fixed timelines in chat.
+No deep technical architecture advice.
+No guarantees on outcomes.
+Always maintain premium brand positioning.
 
-## Contact Information
-- Website: rendernext.io
-- Schedule a call: /contact page
-- WhatsApp available for quick questions
+COMPANY KNOWLEDGE BASE:
 
-Remember: Your goal is to help potential clients understand if RenderNext is a good fit and guide them toward booking a discovery call for detailed project discussions.`;
+Company: RenderNext LLC
+Location: 5900 Balcones Drive #19257, Austin, TX 78731, USA
+Website: www.rendernext.io
+Tagline: "Turn Your Ideas into High-Performance Digital Products"
+
+What we do:
+RenderNext is a premier digital product studio building mobile apps, web applications, AI solutions, and UI/UX designs for startups, scaleups, and enterprises across the US and globally.
+
+Key stats:
+• 5+ years of experience
+• 8–12 weeks to launch an MVP
+• 100% code ownership — clients own everything
+• 99.5% crash-free rate
+• 95% on-time delivery
+• 24/7 support with 4-hour response SLA
+• 100% NDA protected
+• Money-back guarantee
+
+Why clients choose us:
+• React Native specialists — one codebase, iOS + Android, 40% faster delivery
+• AI integration experts with real-world ROI
+• Full-cycle — from idea and design to launch and maintenance
+• 30% lower cost vs. typical US agencies
+• No hidden fees, transparent milestone-based billing
+
+Services:
+• Mobile App Development — React Native, iOS + Android. MVP from $15K.
+• Web App Development — Next.js 14, React 18, TypeScript. SaaS, portals, e-commerce, dashboards.
+• AI Solutions — Chatbots, automation, content generation, personalization. Stack: OpenAI GPT-4, Claude, LangChain, Pinecone, n8n, Zapier.
+• UI/UX Design — Figma. Wireframes, prototypes, design systems. 2–3 revision rounds included.
+• MVP Development — Idea to App Store in 8 weeks from $15K. Fixed price, milestone payments.
+• Maintenance & Support — Essential $1,500/mo, Growth $3,000/mo, Enterprise custom.
+
+Industries served:
+Healthcare (HIPAA) | FinTech | E-Commerce | SaaS | EdTech | Logistics | Real Estate | Food & Delivery | Travel | Social | Entertainment | Startups
+
+Portfolio highlights:
+• Cartaisy (live at cartaisy.com) — Shopify to native iOS/Android. 3x conversion lift. $49/mo SaaS.
+• FitPlus — Health & fitness tracking app (React Native, Firebase, HealthKit)
+• OrderFlow — Restaurant ordering platform (Next.js, Stripe, Maps)
+• TaskHub — Team collaboration tool (React Native, Supabase, WebSockets)
+
+Tech stack:
+Mobile: React Native, Expo, TypeScript
+Web: Next.js 14, React 18, Tailwind CSS
+Backend: Node.js, Python, PostgreSQL, Firebase, Supabase, Redis
+Cloud: AWS, Vercel, Cloudflare
+Payments: Stripe, Apple Pay, Google Pay
+Auth: Clerk, Auth.js, OAuth 2.0
+
+Contact:
+Email: info@rendernext.io
+Phone: +1 (512) 325-6674
+WhatsApp: +92 333 224 0596
+Book a call: https://calendly.com/rendernext/15min
+Cost estimator: rendernext.io/estimate
+Hours: Mon–Fri, 9AM–6PM CST
+
+Commitments: 100% code ownership • Money-back guarantee • NDA protected • On-time delivery • Transparent pricing • 24/7 support • Weekly updates`;
 
 interface ChatMessage {
   role: "user" | "assistant";
@@ -86,7 +129,6 @@ interface ChatMessage {
 
 export async function POST(request: NextRequest) {
   try {
-    // Check for API key
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
       console.error("ANTHROPIC_API_KEY is not configured");
@@ -96,9 +138,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Rate limiting check
-    const rateLimitKey = getRateLimitKey(request);
-    const { allowed, remaining } = checkRateLimit(rateLimitKey);
+    // Rate limiting
+    const { allowed, remaining } = checkRateLimit(request);
 
     if (!allowed) {
       return NextResponse.json(
@@ -107,7 +148,7 @@ export async function POST(request: NextRequest) {
           status: 429,
           headers: {
             "X-RateLimit-Remaining": "0",
-            "X-RateLimit-Reset": String(RATE_LIMIT_WINDOW / 1000),
+            "X-RateLimit-Reset": "60",
           },
         }
       );
@@ -117,85 +158,56 @@ export async function POST(request: NextRequest) {
     const messages: ChatMessage[] = body.messages;
 
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
-      return NextResponse.json(
-        { error: "Messages are required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Messages are required" }, { status: 400 });
     }
 
-    // Validate message content
     const lastMessage = messages[messages.length - 1];
     if (!lastMessage.content || typeof lastMessage.content !== "string") {
-      return NextResponse.json(
-        { error: "Invalid message format" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Invalid message format" }, { status: 400 });
     }
 
-    // Limit conversation history to last 10 messages to manage token usage
+    const client = new Anthropic({ apiKey });
+
+    // Keep last 10 messages for context
     const recentMessages = messages.slice(-10);
 
-    // Format messages for Claude API
-    const formattedMessages = recentMessages.map((msg) => ({
-      role: msg.role,
-      content: msg.content,
-    }));
-
-    // Call Claude API
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": apiKey,
-        "anthropic-version": "2023-06-01",
-      },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 500,
-        system: SYSTEM_PROMPT,
-        messages: formattedMessages,
-      }),
+    const response = await client.messages.create({
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 600,
+      system: SYSTEM_PROMPT,
+      messages: recentMessages.map((msg) => ({
+        role: msg.role,
+        content: msg.content,
+      })),
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Claude API error:", response.status, errorText);
+    const assistantMessage =
+      response.content[0]?.type === "text"
+        ? response.content[0].text
+        : "I apologize, I couldn't generate a response. Please try again.";
 
-      if (response.status === 401) {
-        return NextResponse.json(
-          { error: "Chat service authentication error. Please contact support." },
-          { status: 503 }
-        );
-      }
+    return NextResponse.json(
+      { message: assistantMessage },
+      { headers: { "X-RateLimit-Remaining": String(remaining) } }
+    );
+  } catch (error) {
+    console.error("Chat API error:", error);
 
-      if (response.status === 429) {
+    if (error instanceof Anthropic.APIError) {
+      if (error.status === 429) {
         return NextResponse.json(
           { error: "Our chat service is experiencing high demand. Please try again shortly." },
           { status: 503 }
         );
       }
-
-      return NextResponse.json(
-        { error: "Unable to get a response. Please try again." },
-        { status: 500 }
-      );
+      if (error.status === 400) {
+        return NextResponse.json(
+          { error: "Unable to process your message. Please try again." },
+          { status: 400 }
+        );
+      }
     }
 
-    const data = await response.json();
-
-    // Extract the text content from Claude's response
-    const assistantMessage = data.content?.[0]?.text || "I apologize, but I couldn't generate a response. Please try again.";
-
-    return NextResponse.json(
-      { message: assistantMessage },
-      {
-        headers: {
-          "X-RateLimit-Remaining": String(remaining),
-        },
-      }
-    );
-  } catch (error) {
-    console.error("Chat API error:", error);
     return NextResponse.json(
       { error: "Something went wrong. Please try again." },
       { status: 500 }
@@ -203,10 +215,6 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Handle other methods
 export async function GET() {
-  return NextResponse.json(
-    { error: "Method not allowed" },
-    { status: 405 }
-  );
+  return NextResponse.json({ error: "Method not allowed" }, { status: 405 });
 }
