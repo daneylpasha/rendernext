@@ -4,8 +4,13 @@ import * as React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Loader2, ArrowRight, ChevronDown, Search } from "lucide-react";
-import { Container, Input, FloatingParticles } from "@/components/ui";
+import { Container, FloatingParticles } from "@/components/ui";
 import { countryCodes } from "@/lib/countryCodes";
+
+const tickerItems = [
+  "Mobile Apps", "Web Platforms", "AI Automation", "React Native", "Next.js 14",
+  "UI/UX Design", "MVP in 8 Weeks", "100% Code Ownership", "Stripe Payments", "AWS Cloud",
+];
 
 const budgetOptions = [
   { value: "", label: "Select your budget range", disabled: true },
@@ -16,13 +21,55 @@ const budgetOptions = [
   { value: "100k+", label: "$100,000+" },
 ];
 
-// Tech partner/platform logos (using text for now - replace with actual SVGs)
 const techPartners = [
-  { name: "React Native", logo: "⚛️" },
-  { name: "Next.js", logo: "▲" },
-  { name: "AWS", logo: "☁️" },
-  { name: "OpenAI", logo: "🤖" },
-  { name: "Stripe", logo: "💳" },
+  {
+    name: "React Native",
+    icon: (
+      <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="2" fill="#61DAFB"/>
+        <ellipse cx="12" cy="12" rx="9.5" ry="3" stroke="#61DAFB" strokeWidth="1.2"/>
+        <ellipse cx="12" cy="12" rx="9.5" ry="3" stroke="#61DAFB" strokeWidth="1.2" transform="rotate(60 12 12)"/>
+        <ellipse cx="12" cy="12" rx="9.5" ry="3" stroke="#61DAFB" strokeWidth="1.2" transform="rotate(120 12 12)"/>
+      </svg>
+    ),
+  },
+  {
+    name: "Next.js",
+    icon: (
+      <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="11" fill="#fff" opacity="0.08"/>
+        <path d="M9 7v10l9-10v10" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+      </svg>
+    ),
+  },
+  {
+    name: "AWS",
+    icon: (
+      <svg className="w-5 h-4 flex-shrink-0" viewBox="0 0 40 24" fill="none">
+        <path fill="#FF9900" d="M14 18a7 7 0 0 1-.4-14A8 8 0 0 1 28.3 7a5 5 0 0 1-.3 11H14z"/>
+        <path stroke="#FF9900" strokeWidth="1.5" strokeLinecap="round" d="M6 20.5Q10 23 14 20.5M14 20.5Q18 23 22 20.5"/>
+        <path fill="#FF9900" d="M21.5 19.5l3-1.5-3-1.5"/>
+      </svg>
+    ),
+  },
+  {
+    name: "OpenAI",
+    icon: (
+      <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9.5" stroke="#10A37F" strokeWidth="1.3" fill="none"/>
+        <path stroke="#10A37F" strokeWidth="1.3" strokeLinecap="round" d="M12 6.5v11M6.5 12h11M8.3 8.3l7.4 7.4M15.7 8.3l-7.4 7.4"/>
+      </svg>
+    ),
+  },
+  {
+    name: "Stripe",
+    icon: (
+      <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" fill="#635BFF"/>
+        <path fill="white" d="M9.8 10.1c0-.8.7-1.4 1.9-1.4.9 0 1.6.4 2 1.2l1.3-.5c-.5-1.3-1.7-2.1-3.3-2.1-2 0-3.4 1.2-3.4 3 0 3.7 5 2.8 5 5.2 0 .9-.8 1.5-2 1.5-1.1 0-1.9-.5-2.3-1.5l-1.3.5c.5 1.4 1.8 2.3 3.6 2.3 2.1 0 3.6-1.2 3.6-3.1 0-3.8-5.1-2.9-5.1-5.1z"/>
+      </svg>
+    ),
+  },
 ];
 
 interface FormData {
@@ -156,7 +203,7 @@ export function Hero() {
 
   return (
     <>
-      <section className="relative min-h-[90vh] bg-[#141414] overflow-hidden">
+      <section className="relative min-h-[90vh] bg-[#141414]">
         {/* Enhanced Background Elements with CSS Animations */}
         <div className="absolute inset-0">
           {/* Base gradient */}
@@ -234,7 +281,7 @@ export function Hero() {
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
+                  transition={{ duration: 0.5, delay: 0.05 }}
                   className="flex flex-wrap items-center gap-2 mb-6"
                 >
                   <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs">
@@ -283,8 +330,17 @@ export function Hero() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.3 }}
-                  className="mb-10"
+                  className="flex flex-wrap items-center gap-3 mb-10"
                 >
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full
+                      bg-gradient-to-r from-[#F5A623] to-[#FFB84D] text-[#141414] font-semibold
+                      hover:shadow-lg hover:shadow-[#F5A623]/30 hover:scale-[1.03] transition-all duration-300 group"
+                  >
+                    Start Your Project
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </Link>
                   <Link
                     href="/work"
                     className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full
@@ -307,243 +363,205 @@ export function Hero() {
                   <p className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-4">
                     Technologies We Use
                   </p>
-                  <div className="flex flex-wrap items-center gap-6">
+                  <div className="flex flex-wrap items-center gap-5">
                     {techPartners.map((partner) => (
                       <div
                         key={partner.name}
-                        className="flex items-center gap-2 text-white/50 hover:text-white/80 transition-colors"
+                        className="flex items-center gap-2 group cursor-default"
                       >
-                        <span className="text-lg">{partner.logo}</span>
-                        <span className="text-sm font-medium">{partner.name}</span>
+                        <div className="opacity-70 group-hover:opacity-100 transition-opacity duration-200">
+                          {partner.icon}
+                        </div>
+                        <span className="text-sm font-medium text-white/45 group-hover:text-white/75 transition-colors duration-200">
+                          {partner.name}
+                        </span>
                       </div>
                     ))}
                   </div>
                 </motion.div>
               </div>
 
-              {/* Right Side - Quote Form */}
+              {/* Right Side - Quote Form (glassmorphic) */}
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.2 }}
                 className="w-full max-w-[500px] mx-auto lg:mx-0 lg:ml-auto"
               >
-                <div className="bg-white rounded-2xl p-8 lg:p-10 shadow-2xl shadow-black/30 ring-1 ring-white/10">
+                <div className="relative rounded-2xl p-8 lg:p-10"
+                  style={{
+                    background: "rgba(255,255,255,0.06)",
+                    backdropFilter: "blur(24px)",
+                    WebkitBackdropFilter: "blur(24px)",
+                    border: "1px solid rgba(255,255,255,0.10)",
+                    boxShadow: "0 32px 64px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08)",
+                  }}
+                >
+                  {/* Mustard top accent */}
+                  <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-[#F5A623] to-transparent" />
+                  {/* Glow orb inside card */}
+                  <div className="absolute -top-20 -right-20 w-48 h-48 rounded-full pointer-events-none"
+                    style={{ background: "radial-gradient(circle, rgba(245,166,35,0.12) 0%, transparent 70%)" }} />
+
                   {isSubmitted ? (
                     <div className="text-center py-8">
-                      <div className="w-14 h-14 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg
-                          className="w-7 h-7 text-accent"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M5 13l4 4L19 7"
-                          />
+                      <div className="w-14 h-14 bg-[#F5A623]/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg className="w-7 h-7 text-[#F5A623]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                       </div>
-                      <h3 className="font-heading text-xl font-semibold text-gray-900 mb-2">
-                        Thank You!
-                      </h3>
-                      <p className="text-gray-500 text-sm">
-                        We&apos;ll get back to you within 24 hours.
-                      </p>
+                      <h3 className="font-heading text-xl font-semibold text-white mb-2">Thank You!</h3>
+                      <p className="text-white/50 text-sm">We&apos;ll get back to you within 24 hours.</p>
                     </div>
                   ) : (
                     <>
-                      {/* Form Header */}
-                      <div className="mb-8">
-                        <h2 className="font-heading text-xl lg:text-2xl font-bold text-gray-900 leading-tight tracking-tight mb-3">
+                      <div className="mb-7 relative z-10">
+                        <h2 className="font-heading text-xl lg:text-2xl font-bold text-white leading-tight tracking-tight mb-2">
                           Get a Free Quote
                         </h2>
-                        <p className="text-gray-600 font-normal leading-snug">
-                          Tell us about your project
-                        </p>
+                        <p className="text-white/45 text-sm">Tell us about your project — no commitment</p>
                       </div>
 
-                      {/* Form */}
-                      <form onSubmit={handleSubmit} className="space-y-5">
-                        {/* Name Field */}
+                      <form onSubmit={handleSubmit} className="space-y-4 relative z-10">
+                        {/* Name */}
                         <div>
-                          <label
-                            htmlFor="name"
-                            className="block text-sm font-medium text-gray-700 mb-1.5"
-                          >
-                            Your Name <span className="text-accent">*</span>
+                          <label htmlFor="name" className="block text-xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
+                            Your Name <span className="text-[#F5A623]">*</span>
                           </label>
-                          <Input
-                            id="name"
-                            name="name"
-                            type="text"
+                          <input
+                            id="name" name="name" type="text"
                             placeholder="Enter your full name"
                             value={formData.name}
                             onChange={handleChange}
-                            className={`h-12 text-base ${errors.name ? "border-red-500" : ""}`}
+                            className={`w-full px-4 h-11 rounded-xl text-white text-sm placeholder:text-white/25 outline-none transition-all duration-200
+                              ${errors.name
+                                ? "bg-red-500/10 border border-red-400/60"
+                                : "bg-white/[0.07] border border-white/[0.12] focus:border-[#F5A623]/70 focus:bg-white/[0.10]"}`}
                           />
-                          {errors.name && (
-                            <p className="text-red-500 text-xs mt-1">{errors.name}</p>
-                          )}
+                          {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name}</p>}
                         </div>
 
-                        {/* Email Field */}
+                        {/* Email */}
                         <div>
-                          <label
-                            htmlFor="email"
-                            className="block text-sm font-medium text-gray-700 mb-1.5"
-                          >
-                            Work Email <span className="text-accent">*</span>
+                          <label htmlFor="email" className="block text-xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
+                            Work Email <span className="text-[#F5A623]">*</span>
                           </label>
-                          <Input
-                            id="email"
-                            name="email"
-                            type="email"
+                          <input
+                            id="email" name="email" type="email"
                             placeholder="Enter your work email"
                             value={formData.email}
                             onChange={handleChange}
-                            className={`h-12 text-base ${errors.email ? "border-red-500" : ""}`}
+                            className={`w-full px-4 h-11 rounded-xl text-white text-sm placeholder:text-white/25 outline-none transition-all duration-200
+                              ${errors.email
+                                ? "bg-red-500/10 border border-red-400/60"
+                                : "bg-white/[0.07] border border-white/[0.12] focus:border-[#F5A623]/70 focus:bg-white/[0.10]"}`}
                           />
-                          {errors.email && (
-                            <p className="text-red-500 text-xs mt-1">{errors.email}</p>
-                          )}
+                          {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email}</p>}
                         </div>
 
-                        {/* Phone Field with Country Code */}
+                        {/* Phone */}
                         <div>
-                          <label
-                            htmlFor="phone"
-                            className="block text-sm font-medium text-gray-700 mb-1.5"
-                          >
-                            Phone Number
+                          <label htmlFor="phone" className="block text-xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
+                            Phone <span className="text-white/30 font-normal normal-case tracking-normal">(optional)</span>
                           </label>
                           <div className="flex gap-2">
-                            {/* Country Code Selector */}
                             <div className="relative" ref={countryDropdownRef}>
                               <button
                                 type="button"
                                 onClick={() => setIsCountryDropdownOpen(!isCountryDropdownOpen)}
-                                className="flex items-center gap-1.5 px-4 h-12 bg-gray-50 border-2 border-gray-200 rounded-lg
-                                  text-gray-900 hover:bg-gray-100 transition-colors min-w-[95px]
-                                  outline-none ring-0 focus:outline-none focus:ring-0 focus:border-[#F5A623]"
+                                className="flex items-center gap-1.5 px-3 h-11 bg-white/[0.07] border border-white/[0.12]
+                                  rounded-xl text-white hover:bg-white/[0.10] transition-colors min-w-[90px]
+                                  outline-none focus:outline-none focus:border-[#F5A623]/70"
                               >
-                                <span className="text-base">{selectedCountry.flag}</span>
-                                <span className="text-sm">{selectedCountry.code}</span>
-                                <ChevronDown className={`w-3 h-3 text-gray-400 transition-transform ${isCountryDropdownOpen ? "rotate-180" : ""}`} />
+                                <span>{selectedCountry.flag}</span>
+                                <span className="text-sm text-white/80">{selectedCountry.code}</span>
+                                <ChevronDown className={`w-3 h-3 text-white/40 transition-transform ${isCountryDropdownOpen ? "rotate-180" : ""}`} />
                               </button>
-
                               {isCountryDropdownOpen && (
-                                <div className="absolute top-full left-0 mt-1 w-72 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
-                                  {/* Search Input */}
-                                  <div className="p-2 border-b border-gray-100">
+                                <div className="absolute top-full left-0 mt-1 w-72 rounded-xl shadow-2xl z-50 overflow-hidden"
+                                  style={{ background: "rgba(20,20,20,0.95)", backdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.10)" }}>
+                                  <div className="p-2 border-b border-white/[0.08]">
                                     <div className="relative">
-                                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
                                       <input
-                                        type="text"
-                                        placeholder="Search country..."
+                                        type="text" placeholder="Search country..."
                                         value={countrySearch}
                                         onChange={(e) => setCountrySearch(e.target.value)}
-                                        className="w-full pl-9 pr-3 py-2 text-sm text-gray-900 bg-white border border-gray-200 rounded-md
-                                          outline-none focus:border-[#F5A623] transition-colors placeholder:text-gray-400"
+                                        className="w-full pl-9 pr-3 py-2 text-sm text-white bg-white/[0.08] border border-white/[0.12] rounded-lg
+                                          outline-none focus:border-[#F5A623]/60 placeholder:text-white/25 transition-colors"
                                         onClick={(e) => e.stopPropagation()}
                                       />
                                     </div>
                                   </div>
-                                  {/* Country List */}
-                                  <div className="max-h-52 overflow-y-auto">
-                                    {filteredCountries.length > 0 ? (
-                                      filteredCountries.map((country, index) => (
-                                        <button
-                                          key={`${country.code}-${country.country}-${index}`}
-                                          type="button"
-                                          onClick={() => selectCountryCode(country.code)}
-                                          className="w-full flex items-center gap-2 px-3 py-2 hover:bg-gray-50 text-sm text-left"
-                                        >
-                                          <span className="text-base">{country.flag}</span>
-                                          <span className="text-gray-900 truncate flex-1">{country.name}</span>
-                                          <span className="text-gray-400 text-xs">{country.code}</span>
-                                        </button>
-                                      ))
-                                    ) : (
-                                      <div className="px-3 py-4 text-sm text-gray-500 text-center">
-                                        No countries found
-                                      </div>
+                                  <div className="max-h-48 overflow-y-auto">
+                                    {filteredCountries.length > 0 ? filteredCountries.map((country, index) => (
+                                      <button
+                                        key={`${country.code}-${country.country}-${index}`}
+                                        type="button"
+                                        onClick={() => selectCountryCode(country.code)}
+                                        className="w-full flex items-center gap-2 px-3 py-2 hover:bg-white/[0.07] text-sm text-left transition-colors"
+                                      >
+                                        <span>{country.flag}</span>
+                                        <span className="text-white/80 truncate flex-1">{country.name}</span>
+                                        <span className="text-white/30 text-xs">{country.code}</span>
+                                      </button>
+                                    )) : (
+                                      <div className="px-3 py-4 text-sm text-white/40 text-center">No countries found</div>
                                     )}
                                   </div>
                                 </div>
                               )}
                             </div>
-
-                            {/* Phone Input */}
-                            <Input
-                              id="phone"
-                              name="phone"
-                              type="tel"
+                            <input
+                              id="phone" name="phone" type="tel"
                               placeholder="Your phone number"
                               value={formData.phone}
                               onChange={handleChange}
-                              className="flex-1 h-12 text-base"
+                              className="flex-1 px-4 h-11 bg-white/[0.07] border border-white/[0.12] rounded-xl text-white text-sm
+                                placeholder:text-white/25 outline-none focus:border-[#F5A623]/70 focus:bg-white/[0.10] transition-all duration-200"
                             />
                           </div>
                         </div>
 
-                        {/* Budget Field */}
+                        {/* Budget */}
                         <div>
-                          <label
-                            htmlFor="budget"
-                            className="block text-sm font-medium text-gray-700 mb-1.5"
-                          >
-                            Budget Range <span className="text-accent">*</span>
+                          <label htmlFor="budget" className="block text-xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
+                            Budget Range <span className="text-[#F5A623]">*</span>
                           </label>
                           <select
-                            id="budget"
-                            name="budget"
+                            id="budget" name="budget"
                             value={formData.budget}
                             onChange={handleChange}
-                            className={`w-full px-4 h-12 bg-white border-2 rounded-lg text-base
-                              transition-all duration-200 outline-none ring-0
-                              focus:outline-none focus:ring-0 focus:border-[#F5A623]
-                              ${errors.budget ? "border-red-500 focus:border-red-500" : "border-gray-200"}
-                              ${!formData.budget ? "text-gray-400" : "text-gray-900"}`}
+                            className={`w-full px-4 h-11 rounded-xl text-sm outline-none transition-all duration-200 appearance-none cursor-pointer
+                              ${errors.budget
+                                ? "bg-red-500/10 border border-red-400/60 text-white"
+                                : "bg-white/[0.07] border border-white/[0.12] focus:border-[#F5A623]/70 focus:bg-white/[0.10]"}
+                              ${!formData.budget ? "text-white/30" : "text-white"}`}
                           >
                             {budgetOptions.map((option) => (
-                              <option
-                                key={option.value}
-                                value={option.value}
-                                disabled={option.disabled}
-                              >
+                              <option key={option.value} value={option.value} disabled={option.disabled}
+                                className="bg-[#1a1a1a] text-white">
                                 {option.label}
                               </option>
                             ))}
                           </select>
-                          {errors.budget && (
-                            <p className="text-red-500 text-xs mt-1">{errors.budget}</p>
-                          )}
+                          {errors.budget && <p className="text-red-400 text-xs mt-1">{errors.budget}</p>}
                         </div>
 
-                        {/* Submit Button */}
+                        {/* Submit */}
                         <button
                           type="submit"
                           disabled={isSubmitting}
-                          className="w-full bg-accent hover:bg-accent-light text-[#141414] font-semibold
-                            px-8 py-4 rounded-xl text-base transition-all duration-200
-                            flex items-center justify-center gap-2 mt-2
-                            disabled:opacity-70 disabled:cursor-not-allowed
-                            focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2
-                            shadow-lg shadow-accent/20 hover:scale-[1.02]"
+                          className="w-full bg-gradient-to-r from-[#F5A623] to-[#FFB84D] text-[#141414] font-bold
+                            px-8 py-3.5 rounded-xl text-sm transition-all duration-300 mt-1
+                            flex items-center justify-center gap-2
+                            disabled:opacity-60 disabled:cursor-not-allowed
+                            hover:from-[#FFB84D] hover:to-[#F5A623] hover:shadow-xl hover:shadow-[#F5A623]/30 hover:scale-[1.02]"
                         >
                           {isSubmitting ? (
-                            <>
-                              <Loader2 className="w-5 h-5 animate-spin" />
-                              Submitting...
-                            </>
+                            <><Loader2 className="w-4 h-4 animate-spin" />Submitting...</>
                           ) : (
-                            <>
-                              Get Quote
-                              <ArrowRight className="w-5 h-5" />
-                            </>
+                            <>Get Free Quote<ArrowRight className="w-4 h-4" /></>
                           )}
                         </button>
                       </form>
@@ -555,6 +573,17 @@ export function Hero() {
           </div>
         </Container>
 
+        {/* Scrolling ticker strip */}
+        <div className="absolute bottom-0 left-0 right-0 overflow-hidden border-t border-white/[0.06]">
+          <div className="flex animate-marquee-left py-3" style={{ width: "fit-content" }}>
+            {[...tickerItems, ...tickerItems, ...tickerItems].map((item, i) => (
+              <span key={i} className="inline-flex items-center gap-3 text-white/30 text-[10px] font-bold tracking-[0.2em] uppercase mx-10 whitespace-nowrap">
+                <span className="w-1 h-1 rounded-full bg-[#F5A623] flex-shrink-0" />
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* Floating WhatsApp Button */}
