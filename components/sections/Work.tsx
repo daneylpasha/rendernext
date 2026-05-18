@@ -78,9 +78,10 @@ export function Work() {
         >
           {projects.map((project) => (
             <StaggerItemScale key={project.title}>
-              <div
-                className="bg-white border border-gray-200 rounded-2xl overflow-hidden h-full
-                  transition-all duration-300 ease-out group shadow-sm
+              <Link
+                href={project.link}
+                className="block bg-white border border-gray-200 rounded-2xl overflow-hidden h-full
+                  transition-all duration-300 ease-out group shadow-sm cursor-pointer
                   hover:-translate-y-2 hover:shadow-2xl hover:shadow-[#F5A623]/10 hover:border-[#F5A623]/40"
               >
                 {/* Image Area */}
@@ -159,16 +160,15 @@ export function Work() {
                   </div>
 
                   {/* Link */}
-                  <Link
-                    href={project.link}
+                  <span
                     className="inline-flex items-center gap-1 text-sm font-medium text-[#F5A623] mt-4
                       group/link link-underline"
                   >
                     View Case Study
-                    <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover/link:translate-x-1" />
-                  </Link>
+                    <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+                  </span>
                 </div>
-              </div>
+              </Link>
             </StaggerItemScale>
           ))}
         </StaggerContainer>

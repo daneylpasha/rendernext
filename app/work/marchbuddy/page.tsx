@@ -940,6 +940,19 @@ export default function MarchBuddyCaseStudy() {
         </Container>
       </section>
 
+      {/* Privacy Policy Strip */}
+      <section className="bg-[#0d0d0d] border-t border-white/10 py-8">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-gray-600">
+          <p>MarchBuddy — developed by Daniyal Pasha</p>
+          <Link
+            href="/work/marchbuddy/privacy-policy"
+            className="text-gray-500 hover:text-lime-400 transition-colors underline underline-offset-4"
+          >
+            Privacy Policy
+          </Link>
+        </div>
+      </section>
+
       {/* Final CTA Section */}
       <section className="bg-gradient-to-br from-lime-500/10 via-white to-lime-500/5 py-20 lg:py-28">
         <Container>

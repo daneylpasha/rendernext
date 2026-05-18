@@ -464,8 +464,8 @@ function ProjectsGridSection() {
           className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           {projects.map((project, index) => (
+            <Link key={index} href={project.link} className="block">
             <motion.div
-              key={index}
               variants={scaleIn}
               whileHover={{ scale: 1.02, y: -8 }}
               transition={{ duration: 0.3 }}
@@ -531,15 +531,15 @@ function ProjectsGridSection() {
                 </div>
 
                 {/* View button - reveals on hover */}
-                <Link
-                  href={project.link}
+                <span
                   className="inline-flex items-center gap-2 text-mustard font-semibold opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300"
                 >
                   View Case Study
                   <ArrowRight className="w-4 h-4" />
-                </Link>
+                </span>
               </div>
             </motion.div>
+            </Link>
           ))}
         </motion.div>
       </div>
